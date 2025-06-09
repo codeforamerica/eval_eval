@@ -2,16 +2,15 @@ from typing import Optional, Literal, List, Any
 
 from pydantic import BaseModel
 
-class Translation(BaseModel):
-    def __init__(self, /, **data: Any) -> None:
-        if data.get("path", None) is not None:
-            with open(data["path"], "r") as translation_file:
-                data["text"] = translation_file.read()
-                del data["path"]
-        super().__init__(**data)
+"""
+Pydantic models for LLM structured output and data validation.
+"""
 
+SUPPORTED_LANGUAGES = ["English", "Chinese", "Tagalog", "Vietnamese"]
+
+class Translation(BaseModel):
     text: str
-    language: Literal["English", "Chinese", "Tagalog", "Vietnamese"]
+    language: Literal[*SUPPORTED_LANGUAGES]
     author: Optional[str]
 
 
@@ -33,3 +32,10 @@ class Result(BaseModel):
     details: Optional[dict] = None
     inference_model_name: Optional[str] = None
     evaluation_model_name: Optional[str] = None
+
+
+class ExperimentSubject(BaseModel):
+    baseline_translation: Translation
+    golden_translation: Translation
+    ai_translation: Translation
+

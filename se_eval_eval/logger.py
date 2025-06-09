@@ -1,6 +1,9 @@
 import logging
 
-# Create and provide a very simple logger implementation.
+"""
+Simple logger implementation to provide CLI feedback.
+"""
+
 logger = logging.getLogger("se_eval_eval")
 formatter = logging.Formatter("%(asctime)s: %(message)s")
 logger.setLevel(logging.DEBUG)
