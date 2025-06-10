@@ -17,9 +17,9 @@ To most easily leverage your machine's GPU, we've opted to run this experiment w
 4. Pull any Ollama models ollama pull "<model>"
 
 ## Commands
-This repository provides two commands "preprocess" and "Evaluate". The former creates initial tranlsation assets required for running experiments. The latter runs the evaluation experiments and is most relevant for most discovery cycle participation cases.
+This repository provides two commands "preprocess" and "evaluate". The former creates initial tranlsation assets required for running experiments. The latter runs the evaluation experiments and is most relevant for most discovery cycle participation cases.
 
-Sample Execution of "Evaluate" command:
+Sample Execution of "evaluate" command:
 
 ```
 .venv/bin/python main.py evaluate translations.json --output-path="results.json"
