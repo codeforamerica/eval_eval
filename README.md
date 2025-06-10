@@ -15,3 +15,13 @@ To most easily leverage your machine's GPU, we've opted to run this experiment w
 2. Setup a Python virtual environment: `python3 -m venv .venv && chmod +x .venv/bin/activate && .venv/bin/activate`
 3. Install requirements `.venv/bin/pip install -r requirements.txt && .venv/bin/pip install -e .`
 4. Pull any Ollama models ollama pull "<model>"
+
+## Commands
+This repository provides two commands "preprocess" and "Evaluate". The former creates initial tranlsation assets required for running experiments. The latter runs the evaluation experiments and is most relevant for most discovery cycle participation cases.
+
+Sample Execution of "Evaluate" command:
+
+```
+.venv/bin/python main.py evaluate translations.json --output-path="results.json"
+```
+
