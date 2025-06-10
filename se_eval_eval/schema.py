@@ -18,9 +18,9 @@ class Document(BaseModel):
     name: str
     translations: List[Translation]
 
-    def get_translation_by_language(self, language: str):
-        translation = next((x for x in self.translations if x.language == language), None)
-        if translation is None:
+    def get_translation_by_language(self, language: str) -> List[Translation]:
+        translation = list(filter(lambda x: x.language.lower() == language.lower(), self.translations))
+        if len(translation) == 0:
             raise RuntimeError(f"Document, {self.name} has no {language} translation.")
         return translation
 
@@ -34,8 +34,8 @@ class Result(BaseModel):
     evaluation_model_name: Optional[str] = None
 
 
-class ExperimentSubject(BaseModel):
+class Scenario(BaseModel):
+    label: str
     baseline_translation: Translation
     golden_translation: Translation
     ai_translation: Translation
-

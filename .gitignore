@@ -90,3 +90,7 @@ cython_debug/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Include DeepEval assets.
+.deepeval_telemetry.txt
+.deepeval

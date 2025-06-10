@@ -2,6 +2,7 @@ from typing import List
 import json
 
 from pypdf import PdfReader
+from pydantic import BaseModel
 
 from se_eval_eval.schema import Document
 
@@ -36,8 +37,8 @@ def hydrate_document_manifest(manifest_path: str):
     return document_models
 
 
-def documents_to_json(documents: List[Document]) -> str:
+def model_list_to_json(models: List[BaseModel]) -> str:
     output = []
-    for document in documents:
-        output.append(document.model_dump())
+    for model in models:
+        output.append(model.model_dump())
     return json.dumps(output, ensure_ascii=False, indent=2)

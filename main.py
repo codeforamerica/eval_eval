@@ -1,8 +1,12 @@
 import argparse
 
+from dotenv import load_dotenv
+
 from se_eval_eval.preprocess import preprocess_manifest
 from se_eval_eval.evaluation import run_experiments_from_manifest
-from se_eval_eval.utility import documents_to_json
+from se_eval_eval.utility import model_list_to_json
+
+load_dotenv()
 
 CMD_PREPROCESS = "preprocess"
 CMD_EVALUATE = "evaluate"
@@ -11,7 +15,7 @@ CMD_EVALUATE = "evaluate"
 def handle_process(args: argparse.Namespace):
     if args.cmd == CMD_PREPROCESS:
         documents = preprocess_manifest(args.manifest_path)
-        json = documents_to_json(documents)
+        json = model_list_to_json(documents)
         if args.output_path is not None:
             with open(args.output_path, "w", encoding="utf-8") as f:
                 f.write(json)
@@ -19,6 +23,12 @@ def handle_process(args: argparse.Namespace):
             print(json)
     if args.cmd == CMD_EVALUATE:
         results = run_experiments_from_manifest(args.manifest_path, "aya-expanse:8b")
+        json = model_list_to_json(results)
+        if args.output_path is not None:
+            with open(args.output_path, "w", encoding="utf-8") as f:
+                f.write(json)
+        else:
+            print(json)
 
 
 def get_args():

@@ -31,7 +31,7 @@ def preprocess_manifest(manifest_path: str) -> List[Document]:
 async def translate_document(document: Document):
     to_languages = SUPPORTED_LANGUAGES
     to_languages.remove("English")
-    english_translation = document.get_translation_by_language("English")
+    english_translation = document.get_translation_by_language("English").pop()
     tasks = []
     for language in to_languages:
         tasks.append(translate_text(english_translation.text, "English", language))
