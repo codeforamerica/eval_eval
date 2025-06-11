@@ -9,12 +9,21 @@ from deepeval.models import GeminiModel
 from se_eval_eval.evaluation import EvalExperimentBase
 from se_eval_eval.schema import Scenario, Result
 
+"""
+Implements metrics from the DeepEval framework.
+
+Resources:
+- [Main Documentation](https://documentation.confident-ai.com/)
+- [Repo](https://github.com/confident-ai/deepeval)
+- [Summary Metric](https://github.com/confident-ai/deepeval/tree/main/deepeval/metrics/summarization)
+"""
+
 def _convert_model_list(list: List) -> list:
     return [dict(item) if isinstance(item, BaseModel) else item for item in list]
 
-class DeepEvalExperiment(EvalExperimentBase):
+class DeepEvalSummaryExperiment(EvalExperimentBase):
 
-    EXPERIMENT_NAME = "deep_eval_experiment"
+    EXPERIMENT_NAME = "deep_eval_summarization"
 
     @staticmethod
     def run_eval(scenario: Scenario) -> Result | List[Result]:
