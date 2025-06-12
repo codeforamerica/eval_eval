@@ -6,7 +6,7 @@ _NB: This repository is a work in progress._
 
 ## How to Contribute
 To contribute to the Discovery Cycle, choose an evaluation and/or telemetry framework and create a script in the "experiments" folder. If you'd like, [a template script](experiments/template.py) has been provided for convenience.
-The `main.py` script should automatically pick it up and run it. After writing and running the evaluation, don't forget to fill out the post evaluation survey.
+You may run your evaluation directly: `.ven/bin/python experiments/my_evaluation.py`. You may alternatively run all evaluations through the `main.py` script. See "Commands" below. 
 
 ## Getting Started
 To most easily leverage your machine's GPU, we've opted to run this experiment with a Python local environment. We'll need to install Ollama and Python dependencies locally.
@@ -25,9 +25,4 @@ Run all experiments:
 
 ```
 .venv/bin/python main.py evaluate translations.json --output-path="results.json"
-```
-
-Run a single experiment (coming soon):
-```
-.venv/bin/python main.py evaluate translations.json --output-path="results.json" --experiment-name="rouge_experiment"
 ```

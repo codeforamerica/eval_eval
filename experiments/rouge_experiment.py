@@ -1,10 +1,7 @@
-from typing import List
-
+import json
 import evaluate
 import numpy as np
 
-from se_eval_eval.evaluation import EvalExperimentBase
-from se_eval_eval.schema import Scenario, Result
 
 """
 Implements the ROUGE metric comparing two translations for overlapping character sequences.
@@ -14,18 +11,30 @@ Resources:
  - [Rouge Python](https://github.com/google-research/google-research/tree/master/rouge)
 """
 
-class RougeExperiment(EvalExperimentBase):
+def load_json() -> list:
+    with open("truthset.json") as f:
+        return json.load(f)
 
-    EXPERIMENT_NAME = "rouge_experiment"
 
-    @staticmethod
-    def run_eval(scenario: Scenario) -> Result | List[Result]:
-        metric = evaluate.load("rouge")
-        metric_result = metric.compute(
-            references=[scenario.golden_translation.text], predictions=[scenario.ai_translation.text]
-        )
-        for key, value in metric_result.items():
-            if type(value) is np.float64:
-                metric_result[key] = float(value)
-        experiment_name = f"{RougeExperiment.EXPERIMENT_NAME}:{scenario.label}"
-        return Result(metric_name=experiment_name, score=metric_result["rougeLsum"], details=metric_result)
+def run_rouge() -> list:
+    # This is pseudocode for now.
+    documents = load_json()
+    results = []
+    for language in ("Spanish", "Chinese", "Vietnamese", "Tagalog"):
+        ai_translations = list(filter(lambda x: x["language"] == language and x["author"] == "aya-expanse:8b", documents))
+        for ai_translation in ai_translations:
+            baseline_translation = next((for x in documents if x["language"] == language and x["author"] == "baseline" and x["part"] == ai_translation["part"]))
+            assert baseline_translation is not None
+            metric = evaluate.load("rouge")
+            metric_result = metric.compute(
+                references=[baseline_translation["text"]], predictions=[ai_translation["text"]]
+            )
+            for key, value in metric_result.items():
+                if type(value) is np.float64:
+                    metric_result[key] = float(value)
+            results.append([metric_result["rougeL"], metric_result])
+    return results
+
+
+if __name__ == "__main__":
+    run_rouge()
