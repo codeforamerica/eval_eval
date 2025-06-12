@@ -32,7 +32,12 @@ def hydrate_document_manifest(manifest_path: str):
                 del translation["path"]
                 # @todo throw
             translations.append(translation)
-        document_model = Document(name=document["name"], translations=translations)
+        document_model = Document(
+            en_name=document["en_name"],
+            en_file_name=document["en_file_name"],
+            en_url=document["en_url"],
+            translations=translations
+        )
         document_models.append(document_model)
     return document_models
 
