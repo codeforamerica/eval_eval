@@ -6,16 +6,19 @@ from pydantic import BaseModel
 Pydantic models for LLM structured output and data validation.
 """
 
-SUPPORTED_LANGUAGES = ["English", "Chinese", "Tagalog", "Vietnamese"]
+SUPPORTED_LANGUAGES = ["English", "Spanish", "Chinese", "Tagalog", "Vietnamese"]
 
 class Translation(BaseModel):
+    part: Optional[str|int|float]
     text: str
     language: Literal[*SUPPORTED_LANGUAGES]
     author: Optional[str]
 
 
 class Document(BaseModel):
-    name: str
+    en_name: str
+    en_file_name: str
+    en_url: str
     translations: List[Translation]
 
     def get_translation_by_language(self, language: str) -> List[Translation]:

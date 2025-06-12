@@ -21,7 +21,7 @@ def preprocess_manifest(manifest_path: str) -> List[Document]:
     logger.info("Successfully hydrated manifest")
     ollama.generate(TRANSLATION_MODEL, "")
     for document in documents:
-        logger.info(f"Translating: {document.name}")
+        logger.info(f"Translating: {document.en_name}")
         translations = asyncio.run(translate_document(document))
         document.translations.extend(translations)
         logger.info(f"Translation complete!")
@@ -31,17 +31,19 @@ def preprocess_manifest(manifest_path: str) -> List[Document]:
 async def translate_document(document: Document):
     to_languages = SUPPORTED_LANGUAGES
     to_languages.remove("English")
-    english_translation = document.get_translation_by_language("English").pop()
+    english_translations = document.get_translation_by_language("English")
     tasks = []
-    for language in to_languages:
-        tasks.append(translate_text(english_translation.text, "English", language))
+    for english_translation in english_translations:
+        for language in to_languages:
+            tasks.append(translate_text(english_translation.text, "English", language, english_translation.part))
     return await asyncio.gather(*tasks)
 
 
-async def translate_text(text, from_language, to_language) -> Translation:
+async def translate_text(text, from_language, to_language, part) -> Translation:
     prompt = translation.baseline_translation_prompt(from_language, to_language, text)
     ret = await ollama.AsyncClient().generate(TRANSLATION_MODEL, prompt, format=Translation.model_json_schema(),
                                               stream=False)
     response = Translation.model_validate_json(ret.response)
+    response.part = part
     response.author = TRANSLATION_MODEL
     return response
