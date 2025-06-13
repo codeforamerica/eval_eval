@@ -36,13 +36,12 @@ def get_experiments(experiment_dir: str) -> List[EvalExperimentBase]:
     return experiments
 
 
-def run_experiments_from_manifest(manifest_path: str, ai_author: str, **kwargs) -> List[Result]:
-    documents = hydrate_document_manifest(manifest_path)
+def run_experiments_from_manifest(hydrated_manifest: List[Document], ai_author: str, **kwargs) -> List[Result]:
     eval_languages = SUPPORTED_LANGUAGES
     eval_languages.remove("English")
     experiment_classes = get_experiments(kwargs.get("experiment_path", "experiments"))
     results = []
-    for document in documents:
+    for document in hydrated_manifest:
         english_translation = document.get_translation_by_language("English").pop()
         for language in eval_languages:
             translations = document.get_translation_by_language(language)

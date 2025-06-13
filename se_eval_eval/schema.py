@@ -6,7 +6,7 @@ from pydantic import BaseModel
 Pydantic models for LLM structured output and data validation.
 """
 
-SUPPORTED_LANGUAGES = ["English", "Spanish", "Chinese", "Tagalog", "Vietnamese"]
+SUPPORTED_LANGUAGES = ["English", "Spanish", "Chinese", "Tagalog", "Vietnamese", "Russian", "Korean", "Lao", "Panjabi"]
 
 class Translation(BaseModel):
     part: Optional[str|int|float]
