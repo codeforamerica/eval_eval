@@ -14,7 +14,7 @@ To most easily leverage your machine's GPU, we've opted to run this experiment w
 1. Install Ollama with homebrew: `brew install ollama`
 2. Setup a Python virtual environment: `python3 -m venv .venv && chmod +x .venv/bin/activate && .venv/bin/activate`
 3. Install requirements `.venv/bin/pip install -r requirements.txt && .venv/bin/pip install -e .`
-4. Pull any Ollama models ollama pull "model name"
+4. Pull any Ollama models ollama pull "model name". Translation is currently using "aya-expanse:8b" and "mistral-nemo:latest".
 
 ## Commands
 This repository provides two commands "preprocess" and "evaluate". The former creates initial translation assets required for running experiments. The latter runs the evaluation experiments and is most relevant for most discovery cycle participation cases.

@@ -14,7 +14,7 @@ Utilities for performing initial text extraction and translation of text or PDF 
 
 def llm_add_translations(hydrated_manifest: List[Document], model_name: str) -> None:
     for document in hydrated_manifest:
-        logger.info(f"Translating: {document.en_name}")
+        logger.info(f"Translating: {document.en_name} with {model_name}")
         translations = asyncio.run(llm_translate_document(document, model_name))
         document.translations.extend(translations)
         logger.info(f"Translation complete!")
