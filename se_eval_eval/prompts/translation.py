@@ -2,7 +2,8 @@ import textwrap
 
 
 def simple_translation_prompt(from_lang, to_lang, text):
-    return textwrap.dedent(f"""
+    return textwrap.dedent(
+        f"""
             Translate the following text from {from_lang} to {to_lang}.
 
             Text: {text}

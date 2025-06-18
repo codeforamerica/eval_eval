@@ -1,12 +1,12 @@
 import asyncio
 import copy
-
-from googletrans import Translator
 from typing import List
+
 import pycountry
+from googletrans import Translator
 
 from se_eval_eval.logger import logger
-from se_eval_eval.schema import Document, Translation, SUPPORTED_LANGUAGES
+from se_eval_eval.schema import SUPPORTED_LANGUAGES, Document, Translation
 
 
 def get_iso639_1_code(language_name):
@@ -15,6 +15,7 @@ def get_iso639_1_code(language_name):
         return language.alpha_2
     except AttributeError:
         return "ISO 639-1 code not found"
+
 
 def google_add_translations(hydrated_manifest: List[Document]) -> None:
     for document in hydrated_manifest:
@@ -31,16 +32,27 @@ async def google_translate_document(document: Document):
     tasks = []
     for english_translation in english_translations:
         for language in to_languages:
-            tasks.append(google_translate_text(english_translation.text, "English", language, english_translation.part))
+            tasks.append(
+                google_translate_text(
+                    english_translation.text,
+                    "English",
+                    language,
+                    english_translation.part,
+                )
+            )
     return await asyncio.gather(*tasks)
 
 
 async def google_translate_text(text, from_language, to_language, part):
     from_language_code = get_iso639_1_code(from_language)
     to_language_code = get_iso639_1_code(to_language)
-    logger.info(f"Translating {from_language}{from_language_code} to {to_language}{to_language_code}")
+    logger.info(
+        f"Translating {from_language}{from_language_code} to {to_language}{to_language_code}"
+    )
     async with Translator() as translator:
-        result = await translator.translate(text, src=from_language_code, dest=to_language_code)
+        result = await translator.translate(
+            text, src=from_language_code, dest=to_language_code
+        )
         return Translation(
             language=to_language,
             author="google_translate",

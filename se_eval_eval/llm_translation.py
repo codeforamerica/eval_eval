@@ -1,12 +1,12 @@
 import asyncio
 from typing import List
 
-from tqdm.asyncio import tqdm
 import ollama
+from tqdm.asyncio import tqdm
 
 from se_eval_eval.logger import logger
-from se_eval_eval.schema import Document, Translation, SUPPORTED_LANGUAGES
 from se_eval_eval.prompts import translation
+from se_eval_eval.schema import SUPPORTED_LANGUAGES, Document, Translation
 
 """
 Utilities for performing translation.
@@ -32,13 +32,24 @@ async def llm_translate_document(document: Document, model_name: str):
         for language in to_languages:
             for prompt in prompts:
                 prompt_text = prompt("English", language, english_translation.text)
-                tasks.append(llm_translate_text(model_name, prompt.__name__, prompt_text, english_translation.part, language))
+                tasks.append(
+                    llm_translate_text(
+                        model_name,
+                        prompt.__name__,
+                        prompt_text,
+                        english_translation.part,
+                        language,
+                    )
+                )
     return await tqdm.gather(*tasks)
 
 
-async def llm_translate_text(model_name: str, prompt_name: str, prompt_text: str, part: int, language: str) -> Translation:
-    ret = await ollama.AsyncClient().generate(model_name, prompt_text, format=Translation.model_json_schema(),
-                                              stream=False)
+async def llm_translate_text(
+    model_name: str, prompt_name: str, prompt_text: str, part: int, language: str
+) -> Translation:
+    ret = await ollama.AsyncClient().generate(
+        model_name, prompt_text, format=Translation.model_json_schema(), stream=False
+    )
     response = Translation.model_validate_json(ret.response)
     response.language = language
     response.part = part

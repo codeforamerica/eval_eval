@@ -2,7 +2,7 @@ import os
 from typing import List
 
 from se_eval_eval.evaluation import EvalExperimentBase
-from se_eval_eval.schema import Scenario, Result
+from se_eval_eval.schema import Result, Scenario
 
 """
 This is a space to put experiments for a given service or evaluation technique.

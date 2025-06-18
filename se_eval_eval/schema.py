@@ -1,4 +1,4 @@
-from typing import Optional, Literal, List
+from typing import List, Literal, Optional
 
 from pydantic import BaseModel, Field, model_serializer
 from pydantic.json_schema import SkipJsonSchema
@@ -7,28 +7,36 @@ from pydantic.json_schema import SkipJsonSchema
 Pydantic models for LLM structured output and data validation.
 """
 
-SUPPORTED_LANGUAGES = ["English", "Spanish", "Chinese", "Tagalog", "Vietnamese", "Russian", "Korean", "Lao", "Panjabi"]
+SUPPORTED_LANGUAGES = [
+    "English",
+    "Spanish",
+    "Chinese",
+    "Tagalog",
+    "Vietnamese",
+    "Russian",
+    "Korean",
+    "Lao",
+    "Panjabi",
+]
 
 
 class Translation(BaseModel):
-    part: SkipJsonSchema[Optional[str|int|float]] = Field(
+    part: SkipJsonSchema[Optional[str | int | float]] = Field(
         default=0,
         description="An identifier that links the same subset of document text across multiple languages.",
     )
-    text: str = Field(
-        description="Text to be translated."
-    )
+    text: str = Field(description="Text to be translated.")
     language: SkipJsonSchema[Literal[*SUPPORTED_LANGUAGES]] = Field(
         default=None,
-        description="The language the text should be translated into. Must be one of se_eval_eval.SUPPORTED_LANGUAGES."
+        description="The language the text should be translated into. Must be one of se_eval_eval.SUPPORTED_LANGUAGES.",
     )
     author: SkipJsonSchema[Optional[str]] = Field(
         default=None,
-        description="The author of the translation or baseline for human translations."
+        description="The author of the translation or baseline for human translations.",
     )
     prompt: SkipJsonSchema[Optional[str]] = Field(
         default=None,
-        description="The prompt responsible for generating the translation if created by an LLM."
+        description="The prompt responsible for generating the translation if created by an LLM.",
     )
 
 
@@ -60,7 +68,9 @@ class Document(BaseModel):
         translations: List[Translation]
           A list of translations associated with the given language.
         """
-        translation = list(filter(lambda x: x.language.lower() == language.lower(), self.translations))
+        translation = list(
+            filter(lambda x: x.language.lower() == language.lower(), self.translations)
+        )
         if len(translation) == 0:
             raise RuntimeError(f"Document, {self.name} has no {language} translation.")
         return translation
@@ -94,9 +104,9 @@ class Scenario(BaseModel):
         description="The experimental translation."
     )
     results: List[Result] = Field(
-        default=[],
-        description="The results of the scenario from all the experiments."
+        default=[], description="The results of the scenario from all the experiments."
     )
+
     def add_result(self, values: dict) -> None:
         """
         Adds a result to a scenario.

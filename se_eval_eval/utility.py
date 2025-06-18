@@ -1,14 +1,15 @@
-from typing import List
 import json
+from typing import List
 
-from pypdf import PdfReader
 from pydantic import BaseModel
+from pypdf import PdfReader
 
 from se_eval_eval.schema import Document
 
 """
 Reusable utilities for preprocessing and evaluation.
 """
+
 
 def hydrate_document_manifest(manifest_path: str):
     # @todo assert manifest exists
@@ -38,7 +39,7 @@ def hydrate_document_manifest(manifest_path: str):
             en_name=document["en_name"],
             en_file_name=document["en_file_name"],
             en_url=document["en_url"],
-            translations=translations
+            translations=translations,
         )
         document_models.append(document_model)
     return document_models

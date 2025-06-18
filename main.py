@@ -2,11 +2,11 @@ import argparse
 
 from dotenv import load_dotenv
 
-from se_eval_eval.llm_translation import llm_add_translations
-from se_eval_eval.google_translation import google_add_translations
 from se_eval_eval.evaluation import run_experiments_from_manifest
-from se_eval_eval.utility import model_list_to_json, hydrate_document_manifest
+from se_eval_eval.google_translation import google_add_translations
+from se_eval_eval.llm_translation import llm_add_translations
 from se_eval_eval.logger import logger
+from se_eval_eval.utility import hydrate_document_manifest, model_list_to_json
 
 """
 Main entrypoint script for interacting with the repo.
@@ -37,7 +37,9 @@ def handle_process(args: argparse.Namespace) -> None:
     logger.info("Successfully hydrated manifest")
     if args.cmd == CMD_TRANSLATE:
         if args.experiments is not None:
-            raise ValueError("The --experiments option cannot be used with the translation command.")
+            raise ValueError(
+                "The --experiments option cannot be used with the translation command."
+            )
         llm_add_translations(hydrated_manifest, "aya-expanse:8b")
         llm_add_translations(hydrated_manifest, "mistral-nemo:latest")
         google_add_translations(hydrated_manifest)
@@ -73,14 +75,26 @@ def get_args() -> argparse.Namespace:
       Args provided from the CLI.
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument('cmd', type=str, choices=[CMD_TRANSLATE, CMD_EVALUATE],
-                        help=f"Command to run {CMD_TRANSLATE} or {CMD_EVALUATE}")
-    parser.add_argument('manifest_path', type=str, help='Manifest JSON file to run command with')
-    parser.add_argument('--output_path', type=str, help='Where to put the output of the command')
-    parser.add_argument('--experiments', type=str, help='A comma separated list of experiment names to run.')
+    parser.add_argument(
+        "cmd",
+        type=str,
+        choices=[CMD_TRANSLATE, CMD_EVALUATE],
+        help=f"Command to run {CMD_TRANSLATE} or {CMD_EVALUATE}",
+    )
+    parser.add_argument(
+        "manifest_path", type=str, help="Manifest JSON file to run command with"
+    )
+    parser.add_argument(
+        "--output_path", type=str, help="Where to put the output of the command"
+    )
+    parser.add_argument(
+        "--experiments",
+        type=str,
+        help="A comma separated list of experiment names to run.",
+    )
     return parser.parse_args()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     provided_args = get_args()
     handle_process(provided_args)

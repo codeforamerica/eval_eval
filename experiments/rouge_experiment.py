@@ -4,8 +4,8 @@ import evaluate
 import numpy as np
 
 from se_eval_eval.evaluation import EvalExperimentBase
-from se_eval_eval.schema import Scenario, Result
 from se_eval_eval.logger import logger
+from se_eval_eval.schema import Result, Scenario
 
 """
 Implements the ROUGE metric comparing two translations for overlapping character sequences.
@@ -15,6 +15,7 @@ Resources:
  - [Rouge Python](https://github.com/google-research/google-research/tree/master/rouge)
 """
 
+
 class RougeExperiment(EvalExperimentBase):
 
     EXPERIMENT_NAME = "rouge_experiment"
@@ -23,14 +24,17 @@ class RougeExperiment(EvalExperimentBase):
     def run_eval(scenario: Scenario):
         metric = evaluate.load("rouge")
         metric_result = metric.compute(
-            references=[scenario.baseline_translation.text], predictions=[scenario.evaluation_translation.text]
+            references=[scenario.baseline_translation.text],
+            predictions=[scenario.evaluation_translation.text],
         )
         for key, value in metric_result.items():
             if type(value) is np.float64:
                 metric_result[key] = float(value)
 
-        scenario.add_result({
-            "metric_name": RougeExperiment.EXPERIMENT_NAME,
-            "score": metric_result["rougeLsum"],
-            "details": metric_result,
-        })
+        scenario.add_result(
+            {
+                "metric_name": RougeExperiment.EXPERIMENT_NAME,
+                "score": metric_result["rougeLsum"],
+                "details": metric_result,
+            }
+        )
