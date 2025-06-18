@@ -54,10 +54,14 @@ def run_experiments_from_manifest(
     if len(metrics) > 0:
         filtered_experiment_classes = []
         for metric in metrics:
-          experiment_class = next((x for x in experiment_classes if x.METRIC_NAME == metric), None)
-          if experiment_class is None:
-              raise ValueError(f"Could not find provided metric {metric}. Aborting run!")
-          filtered_experiment_classes.append(experiment_class)
+            experiment_class = next(
+                (x for x in experiment_classes if x.METRIC_NAME == metric), None
+            )
+            if experiment_class is None:
+                raise ValueError(
+                    f"Could not find provided metric {metric}. Aborting run!"
+                )
+            filtered_experiment_classes.append(experiment_class)
         experiment_classes = filtered_experiment_classes
         logger.info(f"Evaluating experiments: {",".join(metrics)}")
     else:

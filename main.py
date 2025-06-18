@@ -1,7 +1,7 @@
 import argparse
 
-from dotenv import load_dotenv
 import ollama
+from dotenv import load_dotenv
 
 from se_eval_eval.evaluation import run_experiments_from_manifest
 from se_eval_eval.google_translation import google_add_translations
@@ -24,6 +24,7 @@ CMD_TRANSLATE = "translate"
 CMD_EVALUATE = "evaluate"
 # A list of supported Ollama models that should be downloaded for complete repository usage.
 SUPPORTED_OLLAMA_MODELS = ["aya-expanse:8b", "mistral-nemo:latest"]
+
 
 def handle_process(args: argparse.Namespace) -> None:
     """
@@ -75,7 +76,9 @@ def assert_ollama_models_installed():
         commands = ""
         for model in missing_models:
             commands += f"ollama pull {model}\n"
-        raise RuntimeError(f"Some required Ollama models are missing. Please run: \n\n{commands}")
+        raise RuntimeError(
+            f"Some required Ollama models are missing. Please run: \n\n{commands}"
+        )
 
 
 def get_args() -> argparse.Namespace:
