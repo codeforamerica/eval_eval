@@ -1,7 +1,7 @@
 import asyncio
-import copy
 from typing import List
 
+from tqdm.asyncio import tqdm
 import ollama
 
 from se_eval_eval.logger import logger
@@ -9,8 +9,11 @@ from se_eval_eval.schema import Document, Translation, SUPPORTED_LANGUAGES
 from se_eval_eval.prompts import translation
 
 """
-Utilities for performing initial text extraction and translation of text or PDF sources.
+Utilities for performing translation.
 """
+
+prompts = (translation.simple_translation_prompt,)
+
 
 def llm_add_translations(hydrated_manifest: List[Document], model_name: str) -> None:
     for document in hydrated_manifest:
@@ -27,15 +30,18 @@ async def llm_translate_document(document: Document, model_name: str):
     tasks = []
     for english_translation in english_translations:
         for language in to_languages:
-            tasks.append(llm_translate_text(model_name, english_translation.text, "English", language, english_translation.part))
-    return await asyncio.gather(*tasks)
+            for prompt in prompts:
+                prompt_text = prompt("English", language, english_translation.text)
+                tasks.append(llm_translate_text(model_name, prompt.__name__, prompt_text, english_translation.part, language))
+    return await tqdm.gather(*tasks)
 
 
-async def llm_translate_text(model_name: str, text, from_language, to_language, part) -> Translation:
-    prompt = translation.simple_translation_prompt(from_language, to_language, text)
-    ret = await ollama.AsyncClient().generate(model_name, prompt, format=Translation.model_json_schema(),
+async def llm_translate_text(model_name: str, prompt_name: str, prompt_text: str, part: int, language: str) -> Translation:
+    ret = await ollama.AsyncClient().generate(model_name, prompt_text, format=Translation.model_json_schema(),
                                               stream=False)
     response = Translation.model_validate_json(ret.response)
+    response.language = language
     response.part = part
     response.author = model_name
+    response.prompt = prompt_name
     return response

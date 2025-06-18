@@ -20,18 +20,19 @@ The run_eval method is passed a scenario, which contains an approved "golden_tra
 #
 #     @staticmethod
 #     def run_eval(scenario: Scenario) -> Result | List[Result]:
-#         """Run evaluation on a given scenario.
+#         """
+#         Run evaluation on a given scenario.
 #
 #         Parameters
 #         ----------
 #         scenario : Scenario
 #             The scenario object containing different translations (baseline_translation, golden_translation, ai_translation)
 #             and a part for identification. See se_eval_eval.schema.Scenario for details.
-#
-#         Returns
-#         -------
-#         Result or list of Result
-#             The evaluation result(s) for the provided scenario.
-#             See se_eval_eval.schema.Result
 #         """
+#         scenario.add_result({
+#             "metric_name": YourExperiment.EXPERIMENT_NAME,
+#             "score": 0,
+#             "reason": "",
+#             "details": {},
+#         })
 #         pass

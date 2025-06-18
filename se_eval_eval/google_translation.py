@@ -18,7 +18,7 @@ def get_iso639_1_code(language_name):
 
 def google_add_translations(hydrated_manifest: List[Document]) -> None:
     for document in hydrated_manifest:
-        logger.info(f"Translating: {document.en_name}")
+        logger.info(f"Translating: {document.en_name} with Google Translate")
         translations = asyncio.run(google_translate_document(document))
         document.translations.extend(translations)
         logger.info(f"Translation complete!")
@@ -36,16 +36,15 @@ async def google_translate_document(document: Document):
 
 
 async def google_translate_text(text, from_language, to_language, part):
-    translations = []
     from_language_code = get_iso639_1_code(from_language)
     to_language_code = get_iso639_1_code(to_language)
     logger.info(f"Translating {from_language}{from_language_code} to {to_language}{to_language_code}")
     async with Translator() as translator:
         result = await translator.translate(text, src=from_language_code, dest=to_language_code)
-        translations.append(Translation(
+        return Translation(
             language=to_language,
             author="google_translate",
             part=part,
             text=result.text,
-        ))
-    return translations
+            prompt=None,
+        )

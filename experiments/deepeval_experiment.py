@@ -26,19 +26,18 @@ class DeepEvalSummaryExperiment(EvalExperimentBase):
     EXPERIMENT_NAME = "deep_eval_summarization"
 
     @staticmethod
-    def run_eval(scenario: Scenario) -> Result | List[Result]:
+    def run_eval(scenario: Scenario):
         model = GeminiModel(
             model_name="gemini-2.5-pro-preview-03-25", api_key=os.getenv("GOOGLE_API_KEY")
         )
         test_case = LLMTestCase(
-            input=scenario.golden_translation.text,
-            actual_output=scenario.ai_translation.text
+            input=scenario.baseline_translation.text,
+            actual_output=scenario.evaluation_translation.text
         )
         metric = SummarizationMetric(
             model=model,
         )
         metric.measure(test_case)
-        experiment_name = f"{DeepEvalExperiment.EXPERIMENT_NAME}:{scenario.label}"
         details = {
             "truths": metric.truths,
             "claims": metric.claims,
@@ -46,4 +45,9 @@ class DeepEvalSummaryExperiment(EvalExperimentBase):
             "coverage_verdicts": _convert_model_list(metric.coverage_verdicts),
             "alignment_verdicts": _convert_model_list(metric.alignment_verdicts),
         }
-        return Result(metric_name=experiment_name, score=metric.score, reason=metric.reason, details=details)
+        scenario.add_result({
+            "metric_name": DeepEvalSummaryExperiment.EXPERIMENT_NAME,
+            "score": metric.score,
+            "reason": metric.reason,
+            "details": details,
+        })

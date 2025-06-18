@@ -18,6 +18,8 @@ def hydrate_document_manifest(manifest_path: str):
     for document in manifest:
         translations = []
         for translation in document["translations"]:
+            if "prompt" not in translation.keys():
+                translation["prompt"] = None
             if "path" in translation.keys():
                 # todo assert path exists
                 if ".txt" in translation["path"]:

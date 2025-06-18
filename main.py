@@ -8,17 +8,36 @@ from se_eval_eval.evaluation import run_experiments_from_manifest
 from se_eval_eval.utility import model_list_to_json, hydrate_document_manifest
 from se_eval_eval.logger import logger
 
+"""
+Main entrypoint script for interacting with the repo.
+
+Run .venv/bin/python main.py --help for more information.
+"""
+
 load_dotenv()
 
-CMD_PREPROCESS = "preprocess"
+# Run the translation process taking a manifest.json file and returning a modified version.
+# Supports initial English translation in text, txt files or PDFs.
+CMD_TRANSLATE = "translate"
+# Run the evaluation process specifying experiments or as an entire suite.
 CMD_EVALUATE = "evaluate"
 
 
-def handle_process(args: argparse.Namespace):
+def handle_process(args: argparse.Namespace) -> None:
+    """
+    Runs either the "translate" or "evaluate" command.
+
+    Parameters
+    ----------
+    args: argparse.Namespace
+      Args provided from the CLI.
+    """
     logger.info(f"Processing manifest: {args.manifest_path}")
     hydrated_manifest = hydrate_document_manifest(args.manifest_path)
     logger.info("Successfully hydrated manifest")
-    if args.cmd == CMD_PREPROCESS:
+    if args.cmd == CMD_TRANSLATE:
+        if args.experiments is not None:
+            raise ValueError("The --experiments option cannot be used with the translation command.")
         llm_add_translations(hydrated_manifest, "aya-expanse:8b")
         llm_add_translations(hydrated_manifest, "mistral-nemo:latest")
         google_add_translations(hydrated_manifest)
@@ -29,7 +48,13 @@ def handle_process(args: argparse.Namespace):
         else:
             print(json)
     if args.cmd == CMD_EVALUATE:
-        results = run_experiments_from_manifest(hydrated_manifest, "aya-expanse:8b")
+        experiments = []
+        experiments_label = "All"
+        if args.experiments is not None:
+            experiments_label = args.experiments
+            experiments = args.experiments.split(",")
+        logger.info(f"Evaluating experiments: {experiments_label}")
+        results = run_experiments_from_manifest(hydrated_manifest, experiments)
         json = model_list_to_json(results)
         if args.output_path is not None:
             with open(args.output_path, "w", encoding="utf-8") as f:
@@ -38,11 +63,21 @@ def handle_process(args: argparse.Namespace):
             print(json)
 
 
-def get_args():
+def get_args() -> argparse.Namespace:
+    """
+    Gets args from the CLI.
+
+    Returns
+    -------
+    args: argparse.Namespace
+      Args provided from the CLI.
+    """
     parser = argparse.ArgumentParser()
-    parser.add_argument('cmd', type=str, choices=[CMD_PREPROCESS, CMD_EVALUATE], help=f"Command to run {CMD_PREPROCESS} or {CMD_EVALUATE}")
+    parser.add_argument('cmd', type=str, choices=[CMD_TRANSLATE, CMD_EVALUATE],
+                        help=f"Command to run {CMD_TRANSLATE} or {CMD_EVALUATE}")
     parser.add_argument('manifest_path', type=str, help='Manifest JSON file to run command with')
     parser.add_argument('--output_path', type=str, help='Where to put the output of the command')
+    parser.add_argument('--experiments', type=str, help='A comma separated list of experiment names to run.')
     return parser.parse_args()
 
 
