@@ -26,8 +26,7 @@ def google_add_translations(hydrated_manifest: List[Document]) -> None:
 
 
 async def google_translate_document(document: Document):
-    to_languages = SUPPORTED_LANGUAGES.copy()
-    to_languages.remove("English")
+    to_languages = filter(lambda x: x != "English", SUPPORTED_LANGUAGES)
     english_translations = document.get_translation_by_language("English")
     tasks = []
     for english_translation in english_translations:

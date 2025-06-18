@@ -6,8 +6,8 @@ from deepeval.models import GeminiModel
 from deepeval.test_case import LLMTestCase
 from pydantic import BaseModel
 
-from se_eval_eval.evaluation import EvalExperimentBase
-from se_eval_eval.schema import Result, Scenario
+from se_eval_eval.evaluation import MetricExperimentBase
+from se_eval_eval.schema import Scenario
 
 """
 Implements metrics from the DeepEval framework.
@@ -23,9 +23,9 @@ def _convert_model_list(list: List) -> list:
     return [dict(item) if isinstance(item, BaseModel) else item for item in list]
 
 
-class DeepEvalSummaryExperiment(EvalExperimentBase):
+class DeepMetricSummaryExperiment(MetricExperimentBase):
 
-    EXPERIMENT_NAME = "deep_eval_summarization"
+    METRIC_NAME = "deep_eval_summarization"
 
     @staticmethod
     def run_eval(scenario: Scenario):
@@ -50,7 +50,7 @@ class DeepEvalSummaryExperiment(EvalExperimentBase):
         }
         scenario.add_result(
             {
-                "metric_name": DeepEvalSummaryExperiment.EXPERIMENT_NAME,
+                "metric_name": DeepMetricSummaryExperiment.METRIC_NAME,
                 "score": metric.score,
                 "reason": metric.reason,
                 "details": details,

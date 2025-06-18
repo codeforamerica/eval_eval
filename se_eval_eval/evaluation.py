@@ -8,7 +8,6 @@ from se_eval_eval.logger import logger
 from se_eval_eval.schema import (
     SUPPORTED_LANGUAGES,
     Document,
-    Result,
     Scenario,
     Translation,
 )
@@ -23,17 +22,17 @@ EVAL_LANGUAGES = SUPPORTED_LANGUAGES
 EVAL_LANGUAGES.remove("English")
 
 
-class EvalExperimentBase(ABC):
-    EXPERIMENT_NAME = ""
+class MetricExperimentBase(ABC):
+    METRIC_NAME = ""
 
     @staticmethod
     @abstractmethod
-    def run_eval(scenario: Scenario) -> Result | List[Result]:
+    def run_eval(scenario: Scenario):
         pass
 
 
-def get_experiments(experiment_dir: str) -> List[EvalExperimentBase]:
-    experiments: List[EvalExperimentBase] = []
+def get_experiments(experiment_dir: str) -> List[MetricExperimentBase]:
+    experiments: List[MetricExperimentBase] = []
     for f in Path(experiment_dir).glob(f"*.py"):
         module_name = f.stem
         if (not module_name.startswith("_")) and (module_name not in globals()):
@@ -41,22 +40,28 @@ def get_experiments(experiment_dir: str) -> List[EvalExperimentBase]:
             for name, obj in inspect.getmembers(module):
                 if (
                     inspect.isclass(obj)
-                    and issubclass(obj, EvalExperimentBase)
-                    and obj != EvalExperimentBase
+                    and issubclass(obj, MetricExperimentBase)
+                    and obj != MetricExperimentBase
                 ):
                     experiments.append(obj)
     return experiments
 
 
 def run_experiments_from_manifest(
-    hydrated_manifest: List[Document], experiments: list, **kwargs
+    hydrated_manifest: List[Document], metrics: list, **kwargs
 ) -> List[Scenario]:
     experiment_classes = get_experiments(kwargs.get("experiment_path", "experiments"))
-    if len(experiments) > 0:
-        experiment_classes = list(
-            filter(lambda x: x.EXPERIMENT_NAME in experiments, experiment_classes)
-        )
-
+    if len(metrics) > 0:
+        filtered_experiment_classes = []
+        for metric in metrics:
+          experiment_class = next((x for x in experiment_classes if x.METRIC_NAME == metric), None)
+          if experiment_class is None:
+              raise ValueError(f"Could not find provided metric {metric}. Aborting run!")
+          filtered_experiment_classes.append(experiment_class)
+        experiment_classes = filtered_experiment_classes
+        logger.info(f"Evaluating experiments: {",".join(metrics)}")
+    else:
+        logger.info(f"Evaluating experiments: All")
     # 1. human vs aya simple prompt
     all_scenarios = []
     for language in EVAL_LANGUAGES:
@@ -75,13 +80,21 @@ def run_experiments_from_manifest(
             {"language": language, "author": "mistral-nemo:latest"},
         )
         all_scenarios.extend(scenarios)
+        # 3. human vs. Google Translate
+        scenarios = _run_scenario(
+            experiment_classes,
+            hydrated_manifest,
+            {"language": language, "author": "baseline"},
+            {"language": language, "author": "google_translate"},
+        )
+        all_scenarios.extend(scenarios)
     # @todo 3. human vs. aya better prompt
     # @todo 4. human vs. nemo better prompt
     return all_scenarios
 
 
 def _run_scenario(
-    experiment_classes: List[EvalExperimentBase],
+    experiment_classes: List[MetricExperimentBase],
     hydrated_manifest: List[Document],
     from_condition: dict,
     to_condition: dict,
@@ -98,7 +111,7 @@ def _run_scenario(
     for experiment_class in experiment_classes:
         for scenario in all_scenarios:
             logger.info(
-                f"Running experiment: {experiment_class.EXPERIMENT_NAME} for scenario: {scenario.name}"
+                f"Running experiment: {experiment_class.METRIC_NAME} for scenario: {scenario.name}"
             )
             experiment_class.run_eval(scenario)
             logger.info("Experiment complete!")

@@ -1,11 +1,8 @@
-from typing import List
-
 import evaluate
 import numpy as np
 
-from se_eval_eval.evaluation import EvalExperimentBase
-from se_eval_eval.logger import logger
-from se_eval_eval.schema import Result, Scenario
+from se_eval_eval.evaluation import MetricExperimentBase
+from se_eval_eval.schema import Scenario
 
 """
 Implements the ROUGE metric comparing two translations for overlapping character sequences.
@@ -16,9 +13,9 @@ Resources:
 """
 
 
-class RougeExperiment(EvalExperimentBase):
+class RougeExperiment(MetricExperimentBase):
 
-    EXPERIMENT_NAME = "rouge_experiment"
+    METRIC_NAME = "rouge_experiment"
 
     @staticmethod
     def run_eval(scenario: Scenario):
@@ -33,7 +30,7 @@ class RougeExperiment(EvalExperimentBase):
 
         scenario.add_result(
             {
-                "metric_name": RougeExperiment.EXPERIMENT_NAME,
+                "metric_name": RougeExperiment.METRIC_NAME,
                 "score": metric_result["rougeLsum"],
                 "details": metric_result,
             }

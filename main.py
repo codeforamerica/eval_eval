@@ -1,6 +1,7 @@
 import argparse
 
 from dotenv import load_dotenv
+import ollama
 
 from se_eval_eval.evaluation import run_experiments_from_manifest
 from se_eval_eval.google_translation import google_add_translations
@@ -21,7 +22,8 @@ load_dotenv()
 CMD_TRANSLATE = "translate"
 # Run the evaluation process specifying experiments or as an entire suite.
 CMD_EVALUATE = "evaluate"
-
+# A list of supported Ollama models that should be downloaded for complete repository usage.
+SUPPORTED_OLLAMA_MODELS = ["aya-expanse:8b", "mistral-nemo:latest"]
 
 def handle_process(args: argparse.Namespace) -> None:
     """
@@ -36,9 +38,10 @@ def handle_process(args: argparse.Namespace) -> None:
     hydrated_manifest = hydrate_document_manifest(args.manifest_path)
     logger.info("Successfully hydrated manifest")
     if args.cmd == CMD_TRANSLATE:
-        if args.experiments is not None:
+        assert_ollama_models_installed()
+        if args.metrics is not None:
             raise ValueError(
-                "The --experiments option cannot be used with the translation command."
+                "The --metrics option cannot be used with the translation command."
             )
         llm_add_translations(hydrated_manifest, "aya-expanse:8b")
         llm_add_translations(hydrated_manifest, "mistral-nemo:latest")
@@ -50,19 +53,29 @@ def handle_process(args: argparse.Namespace) -> None:
         else:
             print(json)
     if args.cmd == CMD_EVALUATE:
-        experiments = []
-        experiments_label = "All"
-        if args.experiments is not None:
-            experiments_label = args.experiments
-            experiments = args.experiments.split(",")
-        logger.info(f"Evaluating experiments: {experiments_label}")
-        results = run_experiments_from_manifest(hydrated_manifest, experiments)
+        metrics = []
+        if args.metrics is not None:
+            metrics = args.metrics.split(",")
+        results = run_experiments_from_manifest(hydrated_manifest, metrics)
         json = model_list_to_json(results)
         if args.output_path is not None:
             with open(args.output_path, "w", encoding="utf-8") as f:
                 f.write(json)
         else:
             print(json)
+
+
+def assert_ollama_models_installed():
+    installed_model_names = []
+    logger.info(ollama.list())
+    for model in ollama.list().models:
+        installed_model_names.append(model.model)
+    missing_models = set(SUPPORTED_OLLAMA_MODELS) - set(installed_model_names)
+    if len(missing_models) > 0:
+        commands = ""
+        for model in missing_models:
+            commands += f"ollama pull {model}\n"
+        raise RuntimeError(f"Some required Ollama models are missing. Please run: \n\n{commands}")
 
 
 def get_args() -> argparse.Namespace:
@@ -88,9 +101,9 @@ def get_args() -> argparse.Namespace:
         "--output_path", type=str, help="Where to put the output of the command"
     )
     parser.add_argument(
-        "--experiments",
+        "--metrics",
         type=str,
-        help="A comma separated list of experiment names to run.",
+        help="A comma separated list of metric names to run.",
     )
     return parser.parse_args()
 
