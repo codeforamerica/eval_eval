@@ -1,41 +1,43 @@
 import json
 
-import nltk
-from readability import Readability
 from deepeval.models import OllamaModel
 from deepeval.test_case import LLMTestCase
-from deepeval.metrics import PromptAlignmentMetric
+from deepeval.metrics import PromptAlignmentMetric, FaithfulnessMetric
 
-from generate import NOTICE_PROMPT
+from generate import ANALYSIS_PROMPT
 
 EVALUATION_MODEL = "deepseek-r1:8b"
+model = OllamaModel(EVALUATION_MODEL)
 
-nltk.download('punkt_tab')
-
-def deterministic_evaluations(text_to_evaluate: str) -> list:
+def deep_eval_faithfulness(source_text: str, text_to_evaluate: str) -> list:
     results = []
-    r = Readability(text_to_evaluate)
-    result = r.flesch()
-    results.append({"metric": "flesh_ease", "score": result.ease})
-    dc = r.dale_chall()
-    results.append({"metric": "dale_chall", "score": dc.score})
+    metric = FaithfulnessMetric(
+        model=model,
+        truths_extraction_limit=10
+    )
+    test_case = LLMTestCase(
+        input="",
+        retrieval_context=[source_text],
+        actual_output=text_to_evaluate,
+    )
+    metric.measure(test_case)
+    results.append({"metric": "deepeval_faithfulness", "score": metric.score, "reason": metric.reason})
     return results
 
-def deep_eval_evaluation(text_to_evaluate: str) -> list:
-    model = OllamaModel(EVALUATION_MODEL)
+
+def deep_eval_prompt_alignment(source_text: str, text_to_evaluate: str) -> list:
+    results = []
     metric = PromptAlignmentMetric(
-        threshold=0.7,
         model=model,
-        include_reason=True,
         prompt_instructions=[
-            "Include request for proof",
-            "Include reason for request of proof",
-            "The availability of continued benefits",
-            "Answer in simple language",
+            '"No" answers represent information that is clearly absent?',
+            '"IDK" answers represent information that is unclear or ambiguous?'
+            "The plain language question consider the overall readability, not just individual elements?",
+            "The summary question should describe overall alignment with all previous questions."
         ]
     )
     test_case = LLMTestCase(
-        input=NOTICE_PROMPT,
+        input=EVALUATION_MODEL.format(notice=source_text),
         actual_output=text_to_evaluate,
     )
     metric.measure(test_case)
@@ -44,13 +46,14 @@ def deep_eval_evaluation(text_to_evaluate: str) -> list:
 
 
 if __name__ == "__main__":
-    with open("output.json", "r") as notice_text:
-        notice_json = json.load(notice_text)
+    with open("notice_analysis.json", "r") as notice_text:
+        analysis_json = json.load(notice_text)
     results = []
-    for notice in notice_json:
-        deterministic_results = deterministic_evaluations(notice)
-        deep_eval_results = deep_eval_evaluation(notice)
-        results.append((deterministic_results + deep_eval_results))
-
-    with open("results.json", "w") as result_output:
+    for analysis in analysis_json:
+        with open(analysis["file"], "r") as file:
+            text = file.read()
+        faithfulness_result = deep_eval_faithfulness(text, analysis["response"])
+        prompt_alignment_result = deep_eval_prompt_alignment(text, analysis["response"])
+        results.append({"file": analysis["file"], "result": faithfulness_result + prompt_alignment_result})
+    with open("evaluation_results.json", "w") as result_output:
         result_output.write(json.dumps(results))

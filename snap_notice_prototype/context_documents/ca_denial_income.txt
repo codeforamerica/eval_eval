@@ -1,0 +1,50 @@
+State of California
+
+Department of Social Services
+
+The County has denied your application for cash aid dated _______.
+
+Here's why:
+
+You cannot get cash aid if your family's net countable income is equal to or more than the need standard set by the state. The need standard for your family size of ____ is $______.
+
+Your family's needs and income are figured on this page.
+
+When you get paid every week or every other week, here is how we figure your monthly income:
+
+First, we add all the income you got in the month and divide by the total number of payments you got. Then, we multiply that amount by the average number of payments in a month.
+
+• If you get paid every week, you may get paid 4 or 5 times in a month. 4.33 is the average number of payments in a month.
+
+• If you get paid every other week, you may get paid 2 or 3 times in a month. 2.167 is the average number of payments in a month.
+
+Here's your information:
+
+Income Reported for the month of ________
+
+Self-Employment Income = ________
+
+Earned Income + ________
+
+Unearned Income + ________
+
+Total Income for the month = ________
+
+**Medi-Cal:** This notice DOES NOT stop or change your Medi-Cal benefits. **Keep using your plastic Benefits Identification Card (s).** You will get another notice telling you about any changes to your health benefits.
+
+**CalFresh:** This notice DOES NOT stop or change your CalFresh benefits. You will get a separate notice telling you about any changes to your CalFresh benefits.
+
+Receiving Medi-Cal and/or CalFresh only DOES NOT count against your cash aid time limits.
+
+INSTRUCTIONS: Use to deny cash aid when the family's income (AU + Non-AU members) is less than MBSAC and the net non-exempt income is equal to or more than Maximum Aid Payment (MAP). Use on NA 213A.
+
+Complete the following:
+
+- Date of application
+- AU size
+- MAP for AU size
+- MM/YYYY of application
+- Total Self-Employment Income
+- Total Other Earned Income
+- Total Unearned Income
+- Sum of Self-Employment, Other Earned and Unearned Income

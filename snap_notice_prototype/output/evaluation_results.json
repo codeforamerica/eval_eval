@@ -1,87 +1,62 @@
 [
-  [
-    [
+  {
+    "file": "context_documents/ca_approval.txt",
+    "result": [
       {
-        "metric": "flesh_ease",
-        "score": "difficult"
-      },
-      {
-        "metric": "dale_chall",
-        "score": 9.671578425655976
-      },
-      {
-        "metric": "deepeval_prompt_alignment",
-        "score": 0.0,
-        "reason": "The score is 0 because the LLM output partially addressed several key instructions: it included request for proof but embedded it without explicit section headers; provided reasons for specific proofs but not a general reason; mentioned continued benefits conditionally but didn't explicitly state availability or clear instructions. However, it did follow the simple language instruction well."
-      }
-    ]
-  ],
-  [
-    [
-      {
-        "metric": "flesh_ease",
-        "score": "difficult"
-      },
-      {
-        "metric": "dale_chall",
-        "score": 10.38087331846068
+        "metric": "deepeval_faithfulness",
+        "score": 0.75,
+        "reason": "The score is 0.75 because there are no contradictions mentioned, indicating that the actual output aligns well with the retrieval context."
       },
       {
         "metric": "deepeval_prompt_alignment",
         "score": 0.0,
-        "reason": "The score is 0 because the LLM did not fully follow several prompt instructions. It partially included a request for proof by having a section but didn't explicitly state that it must be submitted; it explained what was needed without stating why, so the reason wasn't clear; continued benefits were mentioned in relation to appeal but not clearly defined with conditions; and while some language is simple, technical terms like SNAP and CDSS are used which may not simplify understanding for all readers."
+        "reason": "The score is 0 because the LLM's answer to one question was 'IDK', which violates the prompt instructions by not being a clear yes or no. Additionally, while some answers are correct and in the right format (like 'Yes' for specific actions), the inconsistent use of 'IDK' when other questions could have been answered with clarity indicates that the overall instruction to provide consistent responses was not followed."
       }
     ]
-  ],
-  [
-    [
+  },
+  {
+    "file": "context_documents/ca_overpayment.txt",
+    "result": [
       {
-        "metric": "flesh_ease",
-        "score": "difficult"
-      },
-      {
-        "metric": "dale_chall",
-        "score": 10.570164766146993
+        "metric": "deepeval_faithfulness",
+        "score": 0.4444444444444444,
+        "reason": "The faithfulness score of 0.44 indicates that the actual output contains several unsupported claims compared to the retrieval context. Specifically, it includes references to telephone numbers and contact persons not mentioned in the context, statements about liability during appeals or adverse decisions without corresponding details in the context, and assertions regarding free legal representation services or advocacy options that are absent from the context. Additionally, there is a claim that the notice uses simple language for a 6th grade reading level, but this is also not directly supported by the retrieval context."
       },
       {
         "metric": "deepeval_prompt_alignment",
         "score": 0.0,
-        "reason": "The score is 0.00 because the LLM output completely failed to include a request for proof from the recipient despite explicit instructions requiring it. Additionally, while continued benefits were mentioned in two places, they were not presented in simple language as required by the prompt. The liability section was also unclear about over issuance repayment requirements and did not explicitly state them."
+        "reason": "The score remains 0.00 because while some answers correctly identify absent information (like telephone number), others use unclear responses like 'IDK' and fail to address the prompt's focus on plain language, despite claiming alignment with readability standards."
       }
     ]
-  ],
-  [
-    [
+  },
+  {
+    "file": "context_documents/ca_denial_income.txt",
+    "result": [
       {
-        "metric": "flesh_ease",
-        "score": "standard"
-      },
-      {
-        "metric": "dale_chall",
-        "score": 9.925417691715825
+        "metric": "deepeval_faithfulness",
+        "score": 0.5,
+        "reason": "The score is 0.50 because there are multiple contradictions: The claim uses 'need standard' while the retrieval context mentions 'Maximum Aid Payment', potentially leading to a misunderstanding about cash aid denial criteria. Additionally, the claim states that liability for over issuances is not included in the notice, but this isn't addressed by the retrieval context which only describes what's present without mentioning absence of such details. The claim also asserts that no telephone number or specific contact person is provided, yet the retrieval context doesn't confirm their absence and might imply they are there if it were to mention them."
       },
       {
         "metric": "deepeval_prompt_alignment",
         "score": 0.0,
-        "reason": "The prompt alignment score is 0.00 because the LLM actual output fails to include several required elements from the prompt: a direct request for proof with specific instructions on what and how; an explicit reason for needing additional proof; clarification on continued benefits during appeal, which was not addressed despite being critical instruction; and it does not provide free legal representation information as requested. The score is at this level due to these omissions."
+        "reason": "The score remains 0.00 because there are multiple unalignments where critical elements like fair hearing rights and contact information were missing from the notice, yet the LLM answers indicated these absences without providing clear evidence or explanation for why they weren't present."
       }
     ]
-  ],
-  [
-    [
+  },
+  {
+    "file": "context_documents/ca_ebt_account.txt",
+    "result": [
       {
-        "metric": "flesh_ease",
-        "score": "difficult"
-      },
-      {
-        "metric": "dale_chall",
-        "score": 10.901108555511343
+        "metric": "deepeval_faithfulness",
+        "score": 0.7,
+        "reason": "The score is 0.70 because there are no contradictions between the retrieval context and the actual output."
       },
       {
         "metric": "deepeval_prompt_alignment",
-        "score": 0.0,
-        "reason": "The prompt alignment score is 0.00 because the LLM actual output completely fails to follow several critical instructions from the input. First, it does not include a request for proof as required by one of the unalignment reasons (the notice doesn't ask the recipient to provide any evidence or documentation). Second, it does not explicitly state the reason for requesting proof; instead, it vaguely references 'insufficient information' without providing context on what specific information is needed. Third, while mentioning continued benefits until February 28th, it fails to clearly explain how this option relates to the proposed suspension and under what conditions it might be revoked (the prompt requires a clear explanation of availability). Fourth, despite having multiple sections about fair hearings, the notice does not adequately address the liability aspect for over issuances in relation to continued benefits - specifically failing to mention that if they continue receiving benefits during appeal, they may lose them entirely upon adverse decision. Fifth, it uses overly complex legal jargon throughout (e.g., 'erroneous assumption', detailed hearing process descriptions) which contradicts the prompt's instruction to use simple language for an average recipient."
+        "score": 0.3333333333333333,
+        "reason": "The prompt alignment score is 0.33 because there are two unalignments: first, the 'No' answer did not clearly indicate that the required information (specific action) was absent in the actual output reason, and second, the 'IDK' answer for plain language readability did not explain the ambiguity but evaluated the notice's compliance with best practices. The score is low due to these failures to properly align with the prompt instructions."
       }
     ]
-  ]
+  }
 ]

@@ -1,112 +1,76 @@
+import glob
 import json
-from typing import List
+from typing import List, Literal
 import textwrap
 
 from pydantic import BaseModel, Field
 import ollama
 
 
-GENERATOR_MODEL = "deepseek-r1:8b"
-
-class Case(BaseModel):
-    first_name: str
-    last_name: str
-    case_number: str
+GENERATOR_MODEL = "qwen3:8b"
 
 
-class CaseList(BaseModel):
-    cases: List[Case]
+class NoticeOfAction(BaseModel):
+    title: str
+    text: str
 
 
-CLIENT_PROMPT = textwrap.dedent("""
-    Generate {count} synthetic legal cases. Return them as a JSON object with a "cases" array containing {count} case objects.
+class AnalysisResult(BaseModel):
+    question: str = Field(description="The question being answered")
+    answer: Literal["Yes", "No", "IDK"] = Field(description="Your answer")
+    reason: str = Field(description="The explanation for your answer")
 
-    Each case should have realistic first_name, last_name, and case_number values.
+class Analysis(BaseModel):
+    results: List[AnalysisResult]
+
+
+ANALYSIS_PROMPT = textwrap.dedent("""
+    Answer the following questions about the provided Supplemental Nutrition Assistance Program (SNAP) client notice.
     
-    Example:
-
-    [{{
-      "first_name": "Alfred",
-      "last_name": "Jenkins",
-      "case_number": 4277799911
-    }},
-    {{
-      "first_name": "Hop",
-      "last_name": "Roberts",
-      "case_number": 2331231231
-    }},
-    {{
-      "first_name": "Fulton",
-      "last_name": "Hyatt",
-      "case_number": 4441234561
-    }}]
+    Instructions: 
+        - Be sure to answer all 10 questions
+        - Restate the question
+        - Provide a "Yes", "No" or "IDK" answer
+        - Always provide a reason for your answer   
+        - Use "IDK" when information might be present but is unclear or ambiguous
+        - Use "No" when information is clearly absent
+        - For the plain language question, consider the overall readability, not just individual elements
+    
+    Questions:
+        - Does the notice clearly state what specific action the state plans to take (e.g., benefit approval, reduction, termination, denial)?
+        - Does the notice explain the specific factual or legal basis for the proposed action?
+        - Does the notice include the household's right to request a fair hearing?
+        - Does the notice include a telephone number for the SNAP office that is either toll-free OR accepts collect calls for households outside the local calling area?
+        - Does the notice include either a specific contact person's name OR a general contact role/department for additional information?
+        - Does the notice include the availability of continued benefits?
+        - Does the notice include the liability of the household for any over issuances received while awaiting a fair hearing if the hearing official's decision is adverse to the household?
+        - Does the notice inform the household about the availability of free legal representation or advocacy services?
+        - Is the notice written in plain language that would be understandable to someone with a 6th grade reading level or below? Consider sentence length, word complexity, jargon usage, and overall clarity.
+        - The above questions represent best practices for writing SNAP client notices. Overall, does this notice meet those requirements? 
+    
+    Notice:
+    {notice}
+    
+    IMPORTANT: remember to ANSWER ALL 10 QUESTIONS
 """)
 
+def generate_analysis(text: str) -> Analysis:
+    prompt = ANALYSIS_PROMPT.format(notice=text)
+    resp = ollama.generate(GENERATOR_MODEL, prompt=prompt, stream=False, format=Analysis.model_json_schema())
+    response_model = Analysis.model_validate_json(resp.response)
+    if len(response_model.results) != 10:
+        raise RuntimeError("Not all questions were answered.")
+    return response_model
 
-def generate_clients(n: int) -> CaseList:
-    print(f"Generating {n} cases...")
-    prompt = CLIENT_PROMPT.format(count=n)
-    ret = ollama.generate(GENERATOR_MODEL, prompt=prompt, format=CaseList.model_json_schema(), stream=False)
-    list = CaseList.model_validate_json(ret.response)
-    assert len(list.cases) == n
-    return list
-
-
-class GeneratedNotice(BaseModel):
-    notice_text: str = Field(description="The SNAP notice text.")
-    thinking: str = Field(description="Notes on your thinking process.")
-
-NOTICE_PROMPT = textwrap.dedent("""
-    You are generating a real, complete Supplemental Nutrition Assistance Program (SNAP) notice for the state of California. This must be a fully filled-out notice with NO placeholders, brackets, or template markers.
-    
-    CRITICAL INSTRUCTIONS:
-    - Replace ALL placeholders with actual information
-    - Use the provided case information to fill in specific details
-    - Generate realistic details for any missing information (addresses, phone numbers, dates, etc.)
-    - Write as if this is an actual government notice being sent to a real person
-    
-    Required Elements (must all be included with specific details):
-        - The proposed action;
-        - The reason for the proposed action;
-        - The household's right to request a fair hearing;
-        - The telephone number of the SNAP office (toll-free number or a number where collect calls will be accepted for households outside the local calling area);
-        - If possible, the name of the person to contact for additional information;
-        - The availability of continued benefits;
-        - The liability of the household for any over issuances received while awaiting a fair hearing if the hearing official's decision is adverse to the household; and
-        - If there is an individual or organization available that provides free legal representation information for the household on the availability of the service.
-    
-    Use this case information to personalize the notice:
-    - Recipient Name: {first_name} {last_name}
-    - Case Number: {case_number}
-    - Generate realistic details for: current date, deadline dates, office address, contact information
-    
-    Example Notice Structure:
-    {example}
-    
-    Generate a complete, professional government notice. Every detail must be filled in with realistic information. Think of this as a real notice that would be mailed to someone's home.
-    
-    Return your response as a JSON object with "notice_text" containing the complete notice and "thinking" explaining your approach.
-""")
-
-
-def generate_notices(case_list: CaseList) -> List[str]:
-    print("Generating notices now...")
-    with open("context_documents/snap_verification_notice_untokenized.txt") as file:
-        example_text = file.read()
-
-    notices = []
-    for case in case_list.cases:
-        print(f"Generating notice for {case.first_name} {case.last_name}...")
-        prompt = NOTICE_PROMPT.format(**{**dict(case), **{"example": example_text}})
-        resp = ollama.generate(GENERATOR_MODEL, prompt=prompt, format=GeneratedNotice.model_json_schema(), stream=False)
-        notice_object = GeneratedNotice.model_validate_json(resp.response)
-        print(notice_object)
-        notices.append(notice_object.notice_text)
-    return notices
 
 
 if __name__ == "__main__":
-    clients = generate_clients(5)
-    notices = generate_notices(clients)
-    with open("output.json", "w") as file:
-        file.write(json.dumps(notices))
+    output = []
+    for file_path in glob.glob("context_documents/*.txt"):
+        with open(file_path) as file:
+            text = file.read()
+        print(f"Analyzing {file_path}...")
+        response = generate_analysis(text)
+        output.append({"file": file_path, "response": response.model_dump()})
+    with open("notice_analysis.json", "w") as output_file:
+        output_file.write(json.dumps(output, indent=2))
