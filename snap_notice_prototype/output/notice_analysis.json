@@ -1,228 +1,570 @@
 [
   {
-    "file": "context_documents/ca_approval.txt",
+    "file": "context_documents/tm44-314.txt",
     "response": {
       "results": [
         {
           "question": "Does the notice clearly state what specific action the state plans to take (e.g., benefit approval, reduction, termination, denial)?",
-          "answer": "Yes",
-          "reason": "The notice states that the County has approved your cash aid, which is a specific action."
+          "answer": "No",
+          "reason": "The notice states that the County of Santa Clara has approved cash aid for Mallard Ducksman, but it does not specify if this is an increase or a new approval. It mentions the change from $237 to $241 due to including Jeffrey Fiddlebrush, implying an increase, but the action taken isn't explicitly described as anything specific like termination or denial."
         },
         {
           "question": "Does the notice explain the specific factual or legal basis for the proposed action?",
-          "answer": "No",
-          "reason": "The notice does not provide any specific factual or legal reasons for the approval of cash aid."
+          "answer": "Yes",
+          "reason": "The notice explains that the change is due to a state law update effective January 1, 2017. It details that children in certain situations (those who received four consecutive months of CalWORKs aid right before birth) are now eligible for cash aid under this new legal basis."
         },
         {
           "question": "Does the notice include the household's right to request a fair hearing?",
           "answer": "Yes",
-          "reason": "The notice clearly states that if the household believes the action is wrong, they can request a hearing."
+          "reason": "The third paragraph explicitly states that if there is a mistake or problems, households can ask for a state hearing and directs them to the back of the notice for instructions."
         },
         {
           "question": "Does the notice include a telephone number for the SNAP office that is either toll-free OR accepts collect calls for households outside the local calling area?",
-          "answer": "Yes",
-          "reason": "The notice provides a toll-free number (1-800-952-5253) for hearing and speech impaired users."
+          "answer": "No",
+          "reason": "The provided text does not mention any specific telephone number. There's no indication of whether it would be toll-free or accept collect calls."
         },
         {
           "question": "Does the notice include either a specific contact person's name OR a general contact role/department for additional information?",
           "answer": "No",
-          "reason": "The notice does not provide a specific contact person's name or a general contact role/department."
+          "reason": "The text does not provide any individual names. It mentions 'the back of this notice' for requesting a hearing, but no direct contact point is given in the main body."
         },
         {
           "question": "Does the notice include the availability of continued benefits?",
-          "answer": "Yes",
-          "reason": "The notice explains that benefits may not be changed if a hearing is requested before the action takes place."
+          "answer": "No",
+          "reason": "While it explains that CalWORKs aid has been approved and changed due to legal reasons, it does not explicitly state whether current or future benefits will be continued. The change is described as effective from January 1, 2017."
         },
         {
           "question": "Does the notice include the liability of the household for any over issuances received while awaiting a fair hearing if the hearing official's decision is adverse to the household?",
-          "answer": "Yes",
-          "reason": "The notice states that if the hearing decision says they are right, the household will owe for any extra benefits received."
+          "answer": "No",
+          "reason": "There is no mention of liability for over-issuances or protections during an appeal process. This information isn't provided in the notice."
         },
         {
           "question": "Does the notice inform the household about the availability of free legal representation or advocacy services?",
-          "answer": "Yes",
-          "reason": "The notice mentions that free legal help is available at local legal aid or welfare rights offices."
-        },
-        {
-          "question": "Is the notice written in plain language that would be understandable to someone with a 6th grade reading level or below? Consider sentence length, word complexity, jargon usage, and overall clarity.",
-          "answer": "IDK",
-          "reason": "While the notice is generally clear, some sections contain complex sentences and jargon (e.g., 'WIC 11253, AB 12 (Chapter 559, Statutes of 2010)') that may be difficult for a 6th-grade reader to understand."
-        },
-        {
-          "question": "The above questions represent best practices for writing SNAP client notices. Overall, does this notice meet those requirements?",
           "answer": "No",
-          "reason": "The notice lacks specific legal or factual basis for the action, does not provide a contact person or role, and contains some complex language that may not be accessible to all readers."
+          "reason": "The notice does not mention anything about free legal representation, advocates, or assistance from organizations. It only refers to a state hearing process."
+        },
+        {
+          "question": "Is the notice written in plain language that would be understandable to someone with a 6th grade reading level or below?",
+          "answer": "Yes",
+          "reason": "The language appears straightforward and not overly complex for a 6th-grade reader. It uses simple sentences, common words, and explains technical terms like 'CalWORKs cash aid' in context."
+        },
+        {
+          "question": "Overall, does this notice meet the requirements?",
+          "answer": "No",
+          "reason": "Although parts of the notice are clear (like explaining the reason for change and mentioning the right to a fair hearing), it lacks several key elements required by SNAP regulations. It doesn't provide contact information, explain liability for overpayments, mention free legal services or continued benefits clearly."
         }
       ]
     }
   },
   {
-    "file": "context_documents/ca_overpayment.txt",
+    "file": "context_documents/M40_171D.txt",
     "response": {
       "results": [
         {
           "question": "Does the notice clearly state what specific action the state plans to take (e.g., benefit approval, reduction, termination, denial)?",
-          "answer": "Yes",
-          "reason": "The notice states that the county can collect an overpayment by lowering your monthly grant, which indicates a reduction in benefits."
+          "answer": "No",
+          "reason": "The notice describes benefits being approved and explains the payment amounts for different scenarios, but it does not specify any adverse action such as reduction or termination. It focuses on positive outcomes like approval."
         },
         {
           "question": "Does the notice explain the specific factual or legal basis for the proposed action?",
-          "answer": "IDK",
-          "reason": "The notice lists possible reasons for the overpayment but does not clearly explain the specific factual or legal basis for the proposed action."
+          "answer": "No",
+          "reason": "The notice explains some details about how payments are calculated (e.g., partial month, immediate need) but does not provide a clear explanation of the factual or legal basis for why these actions were taken. It assumes prior approval without detailing specific criteria."
         },
         {
           "question": "Does the notice include the household's right to request a fair hearing?",
-          "answer": "Yes",
-          "reason": "The notice includes a warning that if the household believes the overpayment is wrong, they should ask for a hearing."
+          "answer": "No",
+          "reason": "There is no mention of the right to request a fair hearing in this notice, which is required by SNAP regulations for any proposed action that may reduce or terminate benefits."
         },
         {
           "question": "Does the notice include a telephone number for the SNAP office that is either toll-free OR accepts collect calls for households outside the local calling area?",
           "answer": "No",
-          "reason": "The notice does not include any telephone number for contacting the SNAP office."
+          "reason": "The notice does not provide any contact information, including a phone number. This misses the requirement to have accessible contact methods."
         },
         {
           "question": "Does the notice include either a specific contact person's name OR a general contact role/department for additional information?",
           "answer": "No",
-          "reason": "The notice does not include any specific contact person or general contact role/department for additional information."
+          "reason": "The notice does not provide any point of contact, whether it be a specific individual or a department/contact role."
         },
         {
           "question": "Does the notice include the availability of continued benefits?",
-          "answer": "No",
-          "reason": "The notice does not mention whether benefits will continue during the appeal process."
+          "answer": "Yes",
+          "reason": "It implies that if nothing changes, next month\u2019s cash aid will be for a full month and you will get $231. This suggests continued benefits unless there is an adverse action."
         },
         {
           "question": "Does the notice include the liability of the household for any over issuances received while awaiting a fair hearing if the hearing official's decision is adverse to the household?",
-          "answer": "IDK",
-          "reason": "The notice mentions that the county can collect an overpayment by lowering the monthly grant, but it is unclear if the household is liable for over issuances during the hearing process."
+          "answer": "No",
+          "reason": "There is no mention of over issuance or what happens regarding repayment during an appeal process. The notice does not reference fair hearings or appeals."
         },
         {
           "question": "Does the notice inform the household about the availability of free legal representation or advocacy services?",
           "answer": "No",
-          "reason": "The notice does not mention any availability of free legal representation or advocacy services."
+          "reason": "The notice does not mention any provision for free legal help, which is a best practice in SNAP notices but absent here."
         },
         {
-          "question": "Is the notice written in plain language that would be understandable to someone with a 6th grade reading level or below? Consider sentence length, word complexity, jargon usage, and overall clarity.",
+          "question": "Is the notice written in plain language that would be understandable to someone with a 6th grade reading level or below?",
           "answer": "Yes",
-          "reason": "The notice uses simple language, short sentences, and avoids complex jargon, making it understandable for someone with a 6th grade reading level."
+          "reason": "The notice uses simple language and short sentences. It avoids complex jargon, making it relatively easy for someone with limited literacy to understand."
         },
         {
-          "question": "The above questions represent best practices for writing SNAP client notices. Overall, does this notice meet those requirements?",
+          "question": "Overall, does this notice meet the requirements of best practices?",
           "answer": "No",
-          "reason": "The notice lacks essential information such as a telephone number, contact details, and information about continued benefits, which are required by best practices."
+          "reason": "This notice fails on multiple counts: lack of right to fair hearing, no contact information (both phone and person), missing liability for overpayments, absence of legal advocacy mention. While it uses plain language effectively in some parts, these omissions mean it does not meet SNAP best practices."
         }
       ]
     }
   },
   {
-    "file": "context_documents/ca_denial_income.txt",
+    "file": "context_documents/cf377_1.txt",
     "response": {
       "results": [
         {
           "question": "Does the notice clearly state what specific action the state plans to take (e.g., benefit approval, reduction, termination, denial)?",
           "answer": "Yes",
-          "reason": "The notice states that the County has denied the application for cash aid, which is a specific action."
+          "reason": "The notice explicitly states that your CalFresh benefits have been approved. It also mentions other potential actions related to Medi-Cal and Child Care if you request a hearing."
         },
         {
           "question": "Does the notice explain the specific factual or legal basis for the proposed action?",
-          "answer": "Yes",
-          "reason": "The notice explains that cash aid is denied if the family's net countable income is equal to or more than the need standard."
+          "answer": "No",
+          "reason": "The notice does not provide any explanation regarding the specific facts or legal reasons behind the approval of CalFresh benefits. It simply states that they have been approved."
         },
         {
           "question": "Does the notice include the household's right to request a fair hearing?",
-          "answer": "No",
-          "reason": "There is no mention of the right to request a fair hearing in the notice."
+          "answer": "Yes",
+          "reason": "The notice clearly mentions 'State Hearing' and explains how you can ask for a hearing if you think an action is wrong. It also provides detailed information on requesting one."
         },
         {
-          "question": "Does the notice include a telephone number for the SNAP office that is either toll-free OR accepts collect calls for households outside the local calling area?",
-          "answer": "No",
-          "reason": "The notice does not provide a telephone number for the SNAP office."
+          "question": "Does the notice include a telephone number for the SNAP office that is either toll-free OR accepts collect calls?",
+          "answer": "Yes",
+          "reason": "The notice includes several options for contacting, including toll-free numbers such as 1-800-952-5253. This meets the requirement."
         },
         {
-          "question": "Does the notice include either a specific contact person's name OR a general contact role/department for additional information?",
-          "answer": "No",
-          "reason": "The notice does not include a specific contact person's name or a general contact role/department."
+          "question": "Does the notice include either a specific contact person's name OR a general contact role/department?",
+          "answer": "Yes",
+          "reason": "The worker section at the top includes Jenna Flaucherman as the specific contact person, along with her address and phone number."
         },
         {
           "question": "Does the notice include the availability of continued benefits?",
-          "answer": "Yes",
-          "reason": "The notice states that Medi-Cal and CalFresh benefits are not affected and continue as usual."
+          "answer": "No",
+          "reason": "While it mentions that if you request a hearing before an action takes place, your Cash Aid or Medi-Cal will stay the same and CalFresh remains unchanged until the hearing. There isn't explicit mention that these actions ensure continued benefits without conditions."
         },
         {
-          "question": "Does the notice include the liability of the household for any over issuances received while awaiting a fair hearing if the hearing official's decision is adverse to the household?",
-          "answer": "No",
-          "reason": "There is no mention of liability for over issuances in the notice."
+          "question": "Does the notice include the liability of the household for any over issuances received while awaiting a fair hearing?",
+          "answer": "Yes",
+          "reason": "The notice states: 'If the hearing decision says we are right, you will owe us for any extra Cash Aid, CalFresh (Food Stamps) or Child Care Services you got.' This indicates liability for over-issuances."
         },
         {
           "question": "Does the notice inform the household about the availability of free legal representation or advocacy services?",
-          "answer": "No",
-          "reason": "The notice does not mention free legal representation or advocacy services."
-        },
-        {
-          "question": "Is the notice written in plain language that would be understandable to someone with a 6th grade reading level or below? Consider sentence length, word complexity, jargon usage, and overall clarity.",
           "answer": "Yes",
-          "reason": "The notice uses simple language and avoids complex terms, making it understandable for a 6th grade reading level."
+          "reason": "The notice mentions that you can get free legal help at your local legal aid or welfare rights office. It also suggests asking for referrals via toll-free numbers."
         },
         {
-          "question": "The above questions represent best practices for writing SNAP client notices. Overall, does this notice meet those requirements?",
+          "question": "Is the notice written in plain language that would be understandable to someone with a 6th grade reading level?",
+          "answer": "IDK",
+          "reason": "Some sentences are long and use terms like 'prorated', 'verification', or 'EBT card' which might not be common for everyone. However, the overall structure is clear, but without assessing actual reading levels, it's hard to say definitively."
+        },
+        {
+          "question": "Overall, does this notice meet best practices requirements?",
           "answer": "No",
-          "reason": "The notice lacks critical elements such as the right to a fair hearing, contact information, and liability information, which are required by best practices."
+          "reason": "The notice has several issues including lack of explanation for legal basis and potential liability confusion due to the absence of clear over-issuance guidelines. It also uses some technical terms that could confuse a layperson."
         }
       ]
     }
   },
   {
-    "file": "context_documents/ca_ebt_account.txt",
+    "file": "context_documents/M40-181F.txt",
+    "response": {
+      "results": [
+        {
+          "question": "Does the notice clearly state what specific action the state plans to take (e.g., benefit approval, reduction, termination, denial)?",
+          "answer": "Yes",
+          "reason": "The notice states that the county completed the eligibility redetermination and approved cash aid for the next reporting period. It also indicates that there will be no change at this time."
+        },
+        {
+          "question": "Does the notice explain the specific factual or legal basis for the proposed action?",
+          "answer": "No",
+          "reason": "The notice does not provide any details about why the cash aid was approved or what specific information led to that decision. It simply states the outcome without explaining the reasoning behind it."
+        },
+        {
+          "question": "Does the notice include the household's right to request a fair hearing?",
+          "answer": "No",
+          "reason": "There is no mention of the right to request a fair hearing in this notice. The text does not reference any appeals process or hearing options for clients."
+        },
+        {
+          "question": "Does the notice include a telephone number for the SNAP office that is either toll-free OR accepts collect calls for households outside the local calling area?",
+          "answer": "No",
+          "reason": "The notice does not provide any specific phone numbers, so it cannot be verified if they are toll-free or accept collect calls. The text mentions contacting the county but no actual number is given."
+        },
+        {
+          "question": "Does the  notice include either a specific contact person's name OR a general contact role/department for additional information?",
+          "answer": "No",
+          "reason": "While it suggests calling the county for questions, there is no specific department or contact role mentioned. It does not provide names of individuals who can be contacted."
+        },
+        {
+          "question": "Does the notice include the availability of continued benefits?",
+          "answer": "Yes",
+          "reason": "The notice states that cash aid has been approved for the next reporting period, indicating that benefits will continue. It also mentions that they are based on the semi-annual or annual cycle."
+        },
+        {
+          "question": "Does the notice include the liability of the household for any over issuances received while awaiting a fair hearing if the hearing official's decision is adverse to the household?",
+          "answer": "No",
+          "reason": "The notice does not address over issuance or liability in case of an appeal. It simply confirms approval and does nothing about potential future disputes."
+        },
+        {
+          "question": "Does the notice inform the household about the availability of free legal representation or advocacy services?",
+          "answer": "No",
+          "reason": "There is no mention of free legal help, representation, or any advocacy services in this notice. The text does not provide information on resources for legal assistance."
+        },
+        {
+          "question": "Is the notice written in plain language that would be understandable to someone with a 6th grade reading level or below? Consider sentence length, word complexity, jargon usage, and overall clarity.",
+          "answer": "Yes",
+          "reason": "The notice uses straightforward English without complex words. It explains necessary actions clearly but has some lists which might require attention for readability at the very lowest levels."
+        },
+        {
+          "question": "Overall, does this notice meet best practices requirements?",
+          "answer": "No",
+          "reason": "Although it states the approval and continued benefits, it fails to mention crucial elements like providing a fair hearing right or liability information. It also lacks specific contact details for the office."
+        }
+      ]
+    }
+  },
+  {
+    "file": "context_documents/M40-107j1.txt",
+    "response": {
+      "results": [
+        {
+          "question": "Does the notice clearly state what specific action the state plans to take (e.g., benefit approval, reduction, termination, denial)?",
+          "answer": "Yes",
+          "reason": "The notice states that due to a condition meeting the rule after 60 months, cash aid is approved. It also mentions the first payment amount and date."
+        },
+        {
+          "question": "Does the notice explain the specific factual or legal basis for the proposed action?",
+          "answer": "No",
+          "reason": "The notice does not provide details about what specific condition meets the rule, nor any reference to relevant state or federal regulations. It only says 'you have a condition that meets the rule'."
+        },
+        {
+          "question": "Does the notice include the household's right to request a fair hearing?",
+          "answer": "Yes",
+          "reason": "The notice states: 'Your condition may be reviewed again to determine if you can continue to get aid.' This implies there is an ongoing process, but it does not explicitly mention the right to appeal or fair hearing."
+        },
+        {
+          "question": "Does the notice include a telephone number for the SNAP office that is either toll-free OR accepts collect calls for households outside the local calling area?",
+          "answer": "No",
+          "reason": "The text does not contain any phone numbers. There are no details provided about contacting methods."
+        },
+        {
+          "question": "Does the notice include either a specific contact person's name OR a general contact role/department for additional information?",
+          "answer": "No",
+          "reason": "The notice does not provide any specific contact names or roles. It says 'Contact the county' but no details are given about how to do so, such as an office name or phone number."
+        },
+        {
+          "question": "Does the notice include the availability of continued benefits?",
+          "answer": "Yes",
+          "reason": "'Your condition may be reviewed again to determine if you can continue to get aid.' This indicates that there is a possibility for continued benefits, though not guaranteed."
+        },
+        {
+          "question": "Does the notice include the liability of the household for any over issuances received while awaiting a fair hearing if the hearing official's decision is adverse to the household?",
+          "answer": "No",
+          "reason": "The notice does not mention anything about fair hearings, appeals, or liabilities for overissuances during an appeal process."
+        },
+        {
+          "question": "Does the notice inform the household about the availability of free legal representation or advocacy services?",
+          "answer": "No",
+          "reason": "There is no information provided regarding free legal aid or SNAP-specific advocacy services. The mention of contacting child support agency may imply a need for that, but not necessarily free services."
+        },
+        {
+          "question": "Is the notice written in plain language that would be understandable to someone with a 6th grade reading level or below? Consider sentence length, word complexity, jargon usage, and overall clarity.",
+          "answer": "Yes",
+          "reason": "The sentences are relatively short. It uses simple words like 'cash aid', 'Medi-Cal', etc., avoiding complex terms except for some technical ones (e.g., CalWORKs). The structure is clear with bullet points."
+        },
+        {
+          "question": "Overall, does this notice meet the best practices requirements?",
+          "answer": "No",
+          "reason": "While it covers basic elements like payment details and continued benefits, it lacks critical information such as an explicit right to fair hearing, liability for overpayments during appeals, and contact information. Also, no mention of legal aid or advocacy services."
+        }
+      ]
+    }
+  },
+  {
+    "file": "context_documents/40171c.txt",
+    "response": {
+      "results": [
+        {
+          "question": "Does the notice clearly state what specific action the state plans to take?",
+          "answer": "No",
+          "reason": "The notice does not explicitly mention any specific action like benefit approval, reduction or termination. It simply states that cash aid and Medi-Cal are approved with a payment amount."
+        },
+        {
+          "question": "Does the notice explain the specific factual or legal basis for the proposed action?",
+          "answer": "No",
+          "reason": "There is no explanation of why these benefits were granted, nor any reference to regulations or criteria that support this decision. The information in Section A appears to be calculations but not reasons."
+        },
+        {
+          "question": "Does the notice include the household's right to request a fair hearing?",
+          "answer": "No",
+          "reason": "The document does not mention anything about appealing decisions through a fair hearing process or provide any link to such procedures. This is required by SNAP regulations but absent here."
+        },
+        {
+          "question": "Does the notice include a telephone number for the SNAP office?",
+          "answer": "No",
+          "reason": "There's no contact information provided at all in this notice, including phone numbers or addresses. Without any clear point of contact, it fails to meet these requirements."
+        },
+        {
+          "question": "Does the notice include either a specific contact person's name OR a general contact role/department?",
+          "answer": "No",
+          "reason": "Same as above - no names or department roles are mentioned in this notice. It lacks any form of human contact information, which is essential for client communication."
+        },
+        {
+          "question": "Does the notice include the availability of continued benefits?",
+          "answer": "Yes",
+          "reason": "The first line states that 'The County has approved your cash aid and Medi-Cal' indicating ongoing eligibility. However, it does not explicitly state what happens if you do nothing or appeal."
+        },
+        {
+          "question": "Does the notice include the liability of the household for any over issuances received while awaiting a fair hearing?",
+          "answer": "No",
+          "reason": "There's no mention whatsoever of liability for benefits received during an appeal process. This specific information is not included in this notice."
+        },
+        {
+          "question": "Does the notice inform the household about the availability of free legal representation or advocacy services?",
+          "answer": "No",
+          "reason": "The notice does not provide any information regarding legal assistance options, which are required for SNAP clients facing potential benefit reductions or terminations."
+        },
+        {
+          "question": "Is the notice written in plain language that would be understandable to someone with a 6th grade reading level?",
+          "answer": "No",
+          "reason": "The notice contains complex financial terms and calculations (e.g., 'Countable Income', 'Earned Income Disregard') without explanation. Sentence lengths are varied but contain jargon like 'MAP' that is not defined, making it difficult for a sixth-grade reader to understand."
+        },
+        {
+          "question": "Overall, does this notice meet the best practices requirements?",
+          "answer": "No",
+          "reason": "This notice fails on multiple counts: missing fair hearing information, lack of contact details, complex language without explanations, and no mention of legal services. It does not align with SNAP client notice standards which require clear communication about actions being taken, rights including appeals, and accessibility through defined contacts."
+        }
+      ]
+    }
+  },
+  {
+    "file": "context_documents/NA1269.txt",
+    "response": {
+      "results": [
+        {
+          "question": "Does the notice clearly state what specific action the state plans to take (e.g., benefit approval, reduction, termination, denial)?",
+          "answer": "Yes",
+          "reason": "The notice states that the County has approved your cash aid. It also explains the payment details and mentions ongoing benefits."
+        },
+        {
+          "question": "Does the notice explain the specific factual or legal basis for the proposed action?",
+          "answer": "No",
+          "reason": "There is no explanation of the reasons behind the approval decision in this notice, except that it's a continuation of the existing cash aid program."
+        },
+        {
+          "question": "Does the notice include the household's right to request a fair hearing?",
+          "answer": "Yes",
+          "reason": "The notice explicitly states 'If you think this action is wrong, you can ask for a hearing.' and provides instructions on how to do so."
+        },
+        {
+          "question": "Does the notice include a telephone number for the SNAP office that is either toll-free OR accepts collect calls for households outside the local calling area?",
+          "answer": "Yes",
+          "reason": "The notice includes a toll-free phone number: 1-800-952-5253, and also provides TDD numbers for hearing or speech impaired individuals."
+        },
+        {
+          "question": "Does the notice include either a specific contact person's name OR a general contact role/department for additional information?",
+          "answer": "Yes",
+          "reason": "The worker's name is provided: Jenna Flaucherman, and there is also an address listed (123 Test Avenue, Santa Clara, CA 95050)."
+        },
+        {
+          "question": "Does the notice include the availability of continued benefits?",
+          "answer": "Yes",
+          "reason": "The notice states that if you request a hearing before an action on Cash Aid, Medi-Cal, CalFresh or Child Care takes place, your benefits may stay the same while waiting for the hearing."
+        },
+        {
+          "question": "Does the notice include the liability of the household for any over issuances received while awaiting a fair hearing if the hearing official's decision is adverse to the household?",
+          "answer": "Yes",
+          "reason": "The notice states: 'If the hearing decision says we are right, you will owe us for any extra Cash Aid, CalFresh or Child Care you got.' This implies that if the action is upheld, liability for overissuances applies."
+        },
+        {
+          "question": "Does the notice inform the household about the availability of free legal representation or advocacy services?",
+          "answer": "Yes",
+          "reason": "The notice states: 'You may get free legal help at your local legal aid or welfare rights office.' and also mentions that you can ask for a referral to legal aid."
+        },
+        {
+          "question": "Is the notice written in plain language that would be understandable to someone with a 6th grade reading level or below? Consider sentence length, word complexity, jargon usage, and overall clarity.",
+          "answer": "Yes",
+          "reason": "The notice uses simple terms like 'Cash aid' instead of SNAP. It breaks down complex information into bullet points and clear instructions."
+        },
+        {
+          "question": "Overall, does this notice meet the best practices requirements?",
+          "answer": "No",
+          "reason": "While many individual elements are present, the notice lacks an explanation for the specific action taken (approval) which is a key component of best practices. It also has some unclear instructions regarding hearing procedures."
+        }
+      ]
+    }
+  },
+  {
+    "file": "context_documents/tm82-832.txt",
+    "response": {
+      "results": [
+        {
+          "question": "Does the notice clearly state what specific action the state plans to take (e.g., benefit approval, reduction, termination, denial)?",
+          "answer": "Yes",
+          "reason": "The notice states that the County has approved cash aid for the individual. It also explains a change in benefits due to an increase in family size."
+        },
+        {
+          "question": "Does the notice explain the specific factual or legal basis for the proposed action?",
+          "answer": "Yes",
+          "reason": "The notice states that State Law has changed, effective April 1, 2015, making individuals with prior felony drug convictions eligible for CalWORKs. The increase in cash aid is due to an additional person being added."
+        },
+        {
+          "question": "Does the notice include the household's right to request a fair hearing?",
+          "answer": "Yes",
+          "reason": "The notice states 'If you think there is a mistake in the amount of your cash aid, or if you have problems other than with the new law you can ask for a state hearing.'"
+        },
+        {
+          "question": "Does the  notice include a telephone number for the SNAP office that is either toll-free OR accepts collect calls for households outside the local calling area?",
+          "answer": "No",
+          "reason": "The notice does not provide any phone numbers or contact information to reach out directly."
+        },
+        {
+          "question": "Does the notice include either a specific contact person's name OR a general contact role/department for additional information?",
+          "answer": "No",
+          "reason": "There is no mention of an individual contact, nor does it refer to any department or office."
+        },
+        {
+          "question": "Does the notice include the availability of continued benefits?",
+          "answer": "Yes",
+          "reason": "The notice mentions that there was a previous cash aid amount and states that it has changed due to an increase in family size. It is implied that they continue to receive benefits but at a different amount."
+        },
+        {
+          "question": "Does the  notice include the liability of the household for any over issuances received while awaiting a fair hearing if the hearing official's decision is adverse to the household?",
+          "answer": "No",
+          "reason": "There is no mention or indication regarding liability for overpayments during a fair hearing."
+        },
+        {
+          "question": "Does the notice inform the household about the availability of free legal representation or advocacy services?",
+          "answer": "No",
+          "reason": "The  notice does not provide any information on free legal representation or advocacy services, such as eligibility criteria or how to access them."
+        },
+        {
+          "question": "Is the notice written in plain language that would be understandable to someone with a 6th grade reading level or below? Consider sentence length, word complexity, jargon usage, and overall clarity.",
+          "answer": "No",
+          "reason": "The notice contains complex terms like 'Assistance Unit', 'CalWORKs', and mentions legal changes that may not be easily understood by someone with a 6th grade reading level. The sentences are also relatively long and the structure is unclear, making it less accessible."
+        },
+        {
+          "question": "Overall best practices: does this notice meet the requirements?",
+          "answer": "No",
+          "reason": "While the notice clarifies that an action (approval) was taken with a legal basis change for CalWORKs eligibility and mentions the right to request a fair hearing, it lacks essential information like contact details, liability instructions, availability of free legal services, and crucially, is not written in plain language. Also, it does not explicitly mention continued benefits or include specific ways to appeal."
+        }
+      ]
+    }
+  },
+  {
+    "file": "context_documents/fns_template.txt",
+    "response": {
+      "results": [
+        {
+          "question": "Does the notice clearly state what specific action the state plans to take (e.g., benefit approval, reduction, termination, denial)?",
+          "answer": "Yes",
+          "reason": "The notice explicitly states that they are approving SNAP benefits for the specified period and explains when a change might affect eligibility."
+        },
+        {
+          "question": "Does the notice explain the specific factual or legal basis for the proposed action?",
+          "answer": "No",
+          "reason": "The notice does not provide any details about why the applicant was deemed eligible, such as income calculations or verification methods. It only states the decision without explanation."
+        },
+        {
+          "question": "Does the notice include the household's right to request a fair hearing?",
+          "answer": "Yes",
+          "reason": "The section titled 'Your Right to a Fair Hearing' is included and clearly explains that an official will review the case in a fair manner as required by law."
+        },
+        {
+          "question": "Does the notice include a telephone number for the SNAP office that is either toll-free OR accepts collect calls for households outside the local calling area?",
+          "answer": "Yes",
+          "reason": "The main contact number provided, 1-800-123-4567, appears to be a toll-free number and there's also a TDD line mentioned for those with disabilities."
+        },
+        {
+          "question": "Does the notice include either a specific contact person's name OR a general contact role/department?",
+          "answer": "No",
+          "reason": "The notice includes an email address but no explicit mention of a contact person or department representative. The signature is from State Department of Human Services, which could be considered as providing the department name."
+        },
+        {
+          "question": "Does the notice include the availability of continued benefits?",
+          "answer": "Yes",
+          "reason": "The notice states that if approved for a period, they will contact them to reapply and explains how to continue receiving benefits during the certification period without interruption."
+        },
+        {
+          "question": "Does the notice inform the household about the liability of over issuances?",
+          "answer": "Yes",
+          "reason": "The section 'What else do you need to know' includes information that if they receive benefits they shouldn't have due to unreported changes, they will be required to repay those amounts."
+        },
+        {
+          "question": "Does the notice inform the household about the availability of free legal representation or advocacy services?",
+          "answer": "Yes",
+          "reason": "The 'Can you get free legal help?' section provides information on how to obtain free legal assistance from [State Legal Aid Name] by providing a phone number and website."
+        },
+        {
+          "question": "Is the notice written in plain language that would be understandable to someone with a 6th grade reading level or below?",
+          "answer": "No",
+          "reason": "The notice contains several complex sentences, technical terms like 'electronic benefit transfer (EBT)', and multiple references without full explanations. The word complexity varies significantly."
+        },
+        {
+          "question": "Overall, does this notice meet best practices requirements?",
+          "answer": "Yes",
+          "reason": "This notice addresses all the required elements: eligibility approval, specific action explanation, right to fair hearing, contact information including toll-free number and TDD options, continued benefits mention, liability for over issuance, availability of free legal aid. Despite some technical language in certain sections, it generally follows the recommended structure and provides necessary details."
+        }
+      ]
+    }
+  },
+  {
+    "file": "context_documents/cf377_4cr.txt",
     "response": {
       "results": [
         {
           "question": "Does the notice clearly state what specific action the state plans to take (e.g., benefit approval, reduction, termination, denial)?",
           "answer": "No",
-          "reason": "The notice does not clearly state a specific action like benefit approval, reduction, termination, or denial. Instead, it explains that the CalFresh electronic benefit account may be deactivated or reactivated based on inactivity."
+          "reason": "The notice does not explicitly state a single action; it mentions that benefits may be reduced or terminated if required information is missing. However, there's also an option for change in benefits due to intentional program violation."
         },
         {
           "question": "Does the notice explain the specific factual or legal basis for the proposed action?",
           "answer": "No",
-          "reason": "The notice does not provide a specific factual or legal basis for the action. It only states that the account may be deactivated due to inactivity over 135 or 180 days, without referencing any specific rules or legal provisions."
+          "reason": "The reason given is that 'information needed was not received with your Change Report', but it doesn't provide details on what exactly constitutes a factual or legal basis. The explanation seems vague and lacks specificity."
         },
         {
           "question": "Does the notice include the household's right to request a fair hearing?",
           "answer": "Yes",
-          "reason": "The notice includes a section titled 'YOUR HEARING RIGHTS' that explains the right to request a fair hearing, the 90-day deadline, and the consequences of requesting a hearing."
+          "reason": "The notice contains multiple sections about hearing rights, including explicit language that allows individuals to ask for a hearing if they disagree with county actions. It also provides instructions on how to request one."
         },
         {
           "question": "Does the notice include a telephone number for the SNAP office that is either toll-free OR accepts collect calls for households outside the local calling area?",
           "answer": "Yes",
-          "reason": "The notice includes a toll-free number (1-800-952-5253) for requesting a hearing and another number for TDD users (1-800-952-8349). These are accessible for households outside the local calling area."
+          "reason": "The form includes a toll-free telephone number: 1-800-952-5253. This satisfies the requirement for providing accessible contact information."
         },
         {
           "question": "Does the notice include either a specific contact person's name OR a general contact role/department for additional information?",
-          "answer": "No",
-          "reason": "The notice does not include a specific contact person's name or a general contact role/department. It refers to the county worker and provides phone numbers instead."
+          "answer": "Yes",
+          "reason": "The notice includes both the worker's name (Jenna Flaucherman) and other contact details. Additionally, it mentions 'your worker' as available for contact, providing a general point of reference."
         },
         {
           "question": "Does the notice include the availability of continued benefits?",
           "answer": "Yes",
-          "reason": "The notice explains that benefits may not be changed if a hearing is requested before the action takes place, and it details how benefits will remain unchanged during the hearing process."
+          "reason": "In the section about hearing rights, it states that CalFresh benefits will stay the same until the hearing or the end of certification period. This indicates a potential for continued benefits during the appeal process."
         },
         {
           "question": "Does the notice include the liability of the household for any over issuances received while awaiting a fair hearing if the hearing official's decision is adverse to the household?",
           "answer": "Yes",
-          "reason": "The notice states that if the hearing decision says the state is right, the household will owe for any extra benefits received, which indicates liability for over issuances."
+          "reason": "The notice includes information about owing back benefits or repayment for extra amounts in certain cases, such as with CalFresh and Cash Aid."
         },
         {
           "question": "Does the notice inform the household about the availability of free legal representation or advocacy services?",
           "answer": "Yes",
-          "reason": "The notice mentions that free legal help can be obtained at local legal aid or welfare rights offices and provides toll-free numbers for legal aid referrals."
+          "reason": "It mentions that individuals can get free legal help at local legal aid or welfare rights offices. Also, they are advised to bring a friend or someone for support during the hearing."
         },
         {
           "question": "Is the notice written in plain language that would be understandable to someone with a 6th grade reading level or below? Consider sentence length, word complexity, jargon usage, and overall clarity.",
-          "answer": "IDK",
-          "reason": "The notice uses some complex terms like 'CalFresh,' 'EBT,' and 'Welfare to Work,' which may be unclear to someone with a 6th-grade reading level. However, the sentences are generally clear and straightforward, making it somewhat understandable."
+          "answer": "No",
+          "reason": "The notice contains complex legal terms like 'Intentional Program Violation' (IPV) and uses dense formatting. There are long sentences that might be difficult to follow for someone with limited literacy or education. The use of jargon such as 'Welfare Office', 'TDD', etc., may not translate well into plain language comprehensible by a 6th-grade reading level."
         },
         {
           "question": "The above questions represent best practices for writing SNAP client notices. Overall, does this notice meet those requirements?",
-          "answer": "Yes",
-          "reason": "The notice includes hearing rights, toll-free numbers, information about continued benefits, liability for over issuances, and availability of legal help. While it lacks specific contact information and a clear explanation of the action's basis, it generally meets the best practices for SNAP client notices."
+          "answer": "No",
+          "reason": "Although the notice provides hearing rights and contact information, several key elements are missing or unclear: specific reason for action is not provided; liability for overissuances isn't clearly explained during appeal period; plain language barriers exist due to jargon and length."
         }
       ]
     }

@@ -1,0 +1,82 @@
+State of California
+Department of Social Services
+
+The County has approved your cash aid and Medi-Cal.  The cash aid payment for your first month of aid is $237.
+
+Your first day of cash aid is 2024-10-13. Your first day of Medi-Cal is the first day of the month you applied for aid.
+
+- [X] The cash aid payment for your first month of aid is only for a part of a month.  It is for the time from your first day of cash aid, show above, through the end of the month.  If nothing changes, next month’s cash aid will be for a full month.
+
+- [ ] You asked for an Immediate Need payment. Your immediate need is being met with a payment of your first month’s cash aid within the immediate need time limit of 1 working day.
+
+
+Your cash aid is figured on this page.
+
+
+INSTRUCTIONS: Use for approvals and restorations FOR CASES WHICH INCLUDE MINOR PARENTS.  Check the applicable box(es).  When you check the immediate need box, you will not need to send a separate notice to the applicant denying the immediate need request.
+
+Print message on NA 290 with special budget in right column.  Budget includes language to accommodate the comparison of MAP for the minor parent’s child(ren).
+
+This message replaces M40-171C dated 01-01-98 released in Errata to 
+ACL 97-59.
+
+Section A. Countable Income, Month of March 2025
+
+Total Business Income                           $2,400
+Business Expenses:
+ a. 40% Standard.........................       -$960
+    OR
+ b. Actual ..............................       -______
+Net Earnings from Self-Employment........       =$1,440
+
+Total Disability-Based Unearned Income of
+ (Assistance Unit+ Non-Assistance Unit Members) $850
+$225 Disregard...........................       -$225
+Nonexempt Unearned Disability-Based Income     =$625
+    OR
+Unused Amount of $225 Disregard..........       = ______
+
+Total Earned Income......................       $1,680
+Net Earnings from Self-Employment (from above)  +$1,440
+Subtotal.................................       =$3,120
+Unused Amount of $225 Disregard (from above)   -$0
+Subtotal.................................       =$3,120
+Earned Income Disregard 50%..............       -$1,560
+Subtotal.................................       =$1,560
+Nonexempt Unearned Disability-Based Income
+ (from above)............................       +$625
+Other Nonexempt Income of (Assistance Unit
+ + Non-Assistance Unit Members)..........       +$0
+ ________________________________________       +$0
+Net Countable Income...................       =$2,185
+
+Section B. Your Cash Aid, Month of March 2025
+
+1. Maximum Aid, 4 Persons (Assistance Unit
+   + Non-Assistance Unit Members).........      $1,368
+2. Special Needs(Assistance Unit + Non-
+   Assistance Unit Members)...............      +$0
+3. Net Countable Income from Section A....      -$2,185
+4. Subtotal...............................      =$0
+5. Maximum Aid, 3 Persons(Assistance Unit only)
+   (Excluding Sanctioned Persons).........      $1,094
+6. Special Needs (Assistance Unit only)...      +$0
+7. Maximum Aid Subtotal...................      =$1,094
+8. Full Month Aid Subtotal................
+   (Lowest Amount on Line 4 or 7).........      =$0
+9. Maximum Aid for Minor parent's
+   1 eligible child(ren)..............      $357
+10. Special Needs........................      +$0
+11. Minor parent's child(ren) Subtotal...      =$357
+12. Full Month Aid Subtotal
+    (Greater Amount on Line 8 or 11).....      =$357
+13. Line 12 Prorated for Part of Month...      =$357
+14. Adjustments: 25% Child Support Sanction    -$0
+                 Overpayment.............      -$0
+14a.             Other Sanctions.........      -$0
+14b.             Bonus...................      +$0
+15. Monthly Cash Aid Amount
+    (Line 12 or 13 Adjusted).............      =$357
+
+
+

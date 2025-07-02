@@ -1,61 +1,151 @@
 [
   {
-    "file": "context_documents/ca_approval.txt",
+    "file": "context_documents/tm44-314.txt",
+    "result": [
+      {
+        "metric": "deepeval_faithfulness",
+        "score": 0.6,
+        "reason": "The faithfulness score of 0.60 indicates that the actual output partially aligns with the retrieval context but contains some inaccuracies. There is a contradiction regarding whether the notice includes liability for over-issuances, as the retrieval context does not mention it at all. Another point concerns the inclusion of contact details; while the claim says no specific telephone number or contact person is mentioned, the retrieval context only states that a method to request a state hearing is provided on the back without confirming if such details are included."
+      },
+      {
+        "metric": "deepeval_prompt_alignment",
+        "score": 0.0,
+        "reason": "The score is 0 because there are several reasons why the alignment was not achieved. First, some 'No' answers were provided with detailed explanations that contradict the prompt's instruction for a simple 'No'. Second, no 'IDK' responses were given when information was unclear or ambiguous according to the second requirement. Third, although a summary question exists at the end, it is answered as 'No' without explicitly summarizing all previous questions."
+      }
+    ]
+  },
+  {
+    "file": "context_documents/M40_171D.txt",
+    "result": [
+      {
+        "metric": "deepeval_faithfulness",
+        "score": 0.5714285714285714,
+        "reason": "The faithfulness score of 0.57 indicates that there are some contradictions between the actual output and the retrieval context. The main contradiction is that the claim mentions multiple scenarios but the retrieval context only covers one, which could be a problem if the notice was supposed to cover all scenarios. Another contradiction is that the claim states the notice fails on several counts including lack of right to fair hearing, etc., but these are not mentioned in the retrieval context at all. However, note that the example says to provide correction ONLY when verdict is 'no', and here it's 'yes' so no direct contradiction was provided for those points."
+      },
+      {
+        "metric": "deepeval_prompt_alignment",
+        "score": 0.0,
+        "reason": "The prompt alignment score is 0.00 because the LLM actual output fails to adhere to several key instructions: it uses 'No' answers without ensuring clarity of absence as required by the first instruction, provides no 'IDK' responses despite having questions where information might be unclear (contradicting the second point), and does not follow the third instruction regarding a summary question that describes overall alignment. The score is at 0.00 because these failures are significant and pervasive across multiple aspects of the response structure."
+      }
+    ]
+  },
+  {
+    "file": "context_documents/cf377_1.txt",
     "result": [
       {
         "metric": "deepeval_faithfulness",
         "score": 0.75,
-        "reason": "The score is 0.75 because there are no contradictions mentioned, indicating that the actual output aligns well with the retrieval context."
+        "reason": "The score is 0.75 because there are no contradictions found between the retrieval context and the actual output."
       },
       {
         "metric": "deepeval_prompt_alignment",
         "score": 0.0,
-        "reason": "The score is 0 because the LLM's answer to one question was 'IDK', which violates the prompt instructions by not being a clear yes or no. Additionally, while some answers are correct and in the right format (like 'Yes' for specific actions), the inconsistent use of 'IDK' when other questions could have been answered with clarity indicates that the overall instruction to provide consistent responses was not followed."
+        "reason": "The score is 0 because the LLM failed to correctly align with several prompt instructions. For instance, it incorrectly answered 'Yes' for whether a specific action was stated when only approval was mentioned and did not address other potential actions like reduction or termination. Additionally, while some answers were correct (e.g., answering 'No' for lack of explanation), the overall score remains low due to multiple misalignments across different questions."
       }
     ]
   },
   {
-    "file": "context_documents/ca_overpayment.txt",
+    "file": "context_documents/M40-181F.txt",
     "result": [
       {
         "metric": "deepeval_faithfulness",
-        "score": 0.4444444444444444,
-        "reason": "The faithfulness score of 0.44 indicates that the actual output contains several unsupported claims compared to the retrieval context. Specifically, it includes references to telephone numbers and contact persons not mentioned in the context, statements about liability during appeals or adverse decisions without corresponding details in the context, and assertions regarding free legal representation services or advocacy options that are absent from the context. Additionally, there is a claim that the notice uses simple language for a 6th grade reading level, but this is also not directly supported by the retrieval context."
+        "score": 0.7777777777777778,
+        "reason": "The score is 0.78 because there are no significant contradictions mentioned, so the actual output aligns well with the retrieval context but has minor discrepancies that account for the slight reduction in faithfulness."
       },
       {
         "metric": "deepeval_prompt_alignment",
         "score": 0.0,
-        "reason": "The score remains 0.00 because while some answers correctly identify absent information (like telephone number), others use unclear responses like 'IDK' and fail to address the prompt's focus on plain language, despite claiming alignment with readability standards."
+        "reason": "The score is 0 because there are multiple unalignments: some 'No' answers do not explicitly state that the required element is absent (e.g., fair hearing right), one answer ('Yes' for plain language) was given without addressing ambiguity, and the summary question lacks a summarizing verdict. The score could be higher if all instructions were followed precisely."
       }
     ]
   },
   {
-    "file": "context_documents/ca_denial_income.txt",
+    "file": "context_documents/M40-107j1.txt",
     "result": [
       {
         "metric": "deepeval_faithfulness",
         "score": 0.5,
-        "reason": "The score is 0.50 because there are multiple contradictions: The claim uses 'need standard' while the retrieval context mentions 'Maximum Aid Payment', potentially leading to a misunderstanding about cash aid denial criteria. Additionally, the claim states that liability for over issuances is not included in the notice, but this isn't addressed by the retrieval context which only describes what's present without mentioning absence of such details. The claim also asserts that no telephone number or specific contact person is provided, yet the retrieval context doesn't confirm their absence and might imply they are there if it were to mention them."
+        "reason": "The faithfulness score is 0.5 because there are two main contradictions: first, the claim incorrectly assumes that cash aid approval requires a condition met after 60 months, but the retrieval context only discusses CalWORKs and Medi-Cal without mentioning such an eligibility criterion; second, while the claim correctly notes that no specific condition details were provided in the text, this is not a contradiction because the context doesn't mention any conditions at all."
       },
       {
         "metric": "deepeval_prompt_alignment",
         "score": 0.0,
-        "reason": "The score remains 0.00 because there are multiple unalignments where critical elements like fair hearing rights and contact information were missing from the notice, yet the LLM answers indicated these absences without providing clear evidence or explanation for why they weren't present."
+        "reason": "The score is 0 because there are multiple unalignments: The LLM did not explain what was absent when answering 'No', used 'No' instead of 'IDK' for unclear information, and failed to provide a summary question. It's at its current score due to these specific failures in following instructions."
       }
     ]
   },
   {
-    "file": "context_documents/ca_ebt_account.txt",
+    "file": "context_documents/40171c.txt",
     "result": [
       {
         "metric": "deepeval_faithfulness",
-        "score": 0.7,
-        "reason": "The score is 0.70 because there are no contradictions between the retrieval context and the actual output."
+        "score": 0.8333333333333334,
+        "reason": "The score is 0.83 because there are no contradictions found between the retrieval context and the actual output."
+      },
+      {
+        "metric": "deepeval_prompt_alignment",
+        "score": 0.5,
+        "reason": "The prompt alignment score is 0.50 because it reflects partial adherence to the instructions regarding how to interpret 'No' answers. The model correctly identified that some required elements are absent, such as specific action and contact information, but failed to recognize that correcting user errors should not be interpreted as absence of a feature when answering questions about presence/absence. This indicates an understanding gap in handling negative responses."
+      }
+    ]
+  },
+  {
+    "file": "context_documents/NA1269.txt",
+    "result": [
+      {
+        "metric": "deepeval_faithfulness",
+        "score": 0.8333333333333334,
+        "reason": "The score is 0.83 because there are no contradictions found between the retrieval context and the actual output."
+      },
+      {
+        "metric": "deepeval_prompt_alignment",
+        "score": 0.0,
+        "reason": "The prompt alignment score is 0 because there are several unalignments: first, for the question about specific action stated, the answer should be 'No' if not clearly stated, but the LLM answered 'Yes'. Second, while the summary verdict is correct as 'No', it fails to align by not summarizing all previous questions. Additionally, the use of 'IDK' in some cases would represent unclear information, but here the answers are definitive and should reflect that absence."
+      }
+    ]
+  },
+  {
+    "file": "context_documents/tm82-832.txt",
+    "result": [
+      {
+        "metric": "deepeval_faithfulness",
+        "score": 0.625,
+        "reason": "The faithfulness score is 0.62 because there are two main contradictions. First, the retrieval context specifies that the cash aid amount increased due to an increase in the number of people specifically within the Assistance Unit from 3 to 4, while the claim attributes it more generally to an increase in family size. Second, the claim states that one can request a state hearing for any mistake or problems other than new law, whereas the retrieval context indicates hearings are available only for mistakes in amount or problems unrelated to the new law. These differences in specificity and scope lead to a lower faithfulness score."
+      },
+      {
+        "metric": "deepeval_prompt_alignment",
+        "score": 0.0,
+        "reason": "The prompt alignment score is 0 because the LLM did not consistently mark only absent information as 'No', failed to use any 'IDK' responses for unclear cases, and provided no separate summary question despite the requirement."
+      }
+    ]
+  },
+  {
+    "file": "context_documents/fns_template.txt",
+    "result": [
+      {
+        "metric": "deepeval_faithfulness",
+        "score": 0.6666666666666666,
+        "reason": "The score is 0.67 because there are no major contradictions observed between the retrieval context and the actual output."
       },
       {
         "metric": "deepeval_prompt_alignment",
         "score": 0.3333333333333333,
-        "reason": "The prompt alignment score is 0.33 because there are two unalignments: first, the 'No' answer did not clearly indicate that the required information (specific action) was absent in the actual output reason, and second, the 'IDK' answer for plain language readability did not explain the ambiguity but evaluated the notice's compliance with best practices. The score is low due to these failures to properly align with the prompt instructions."
+        "reason": "The prompt alignment score is 0.33 because there are several unalignments that significantly reduce the score despite some positive aspects. The LLM's answers for certain questions were marked as 'No' but provided detailed reasons, which contradicts the expectation of simply stating absence without explanation. This inconsistency suggests a misunderstanding or misinterpretation of the prompt instructions."
+      }
+    ]
+  },
+  {
+    "file": "context_documents/cf377_4cr.txt",
+    "result": [
+      {
+        "metric": "deepeval_faithfulness",
+        "score": 0.6666666666666666,
+        "reason": "The score is 0.67 because there are three main contradictions: first, the claim incorrectly states a specific reason ('information needed was not received with your Change Report') that isn't mentioned in the retrieval context; second, it inaccurately includes an alternative condition (hearing completed or end of certification period) for benefits remaining unchanged when the retrieval context only mentions during the hearing process; and third, it wrongly claims that Households may owe back benefits specifically during the appeal process which is not addressed at all by the retrieval context."
+      },
+      {
+        "metric": "deepeval_prompt_alignment",
+        "score": 0.0,
+        "reason": "The prompt alignment score is 0.00 because there are several unalignments: one question was answered with insufficient reason for a 'No', all answers were either 'Yes' or 'No' without any 'IDK' which would be required if the information was unclear, and there was no summary verdict provided as instructed."
       }
     ]
   }
