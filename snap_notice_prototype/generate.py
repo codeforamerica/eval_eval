@@ -64,14 +64,6 @@ def generate_analysis(text: str) -> Analysis:
 
 
 if __name__ == "__main__":
-  #  with open("context_documents/ca_approval.txt") as file:
-        # original_response = generate_notice(file.read())
-        # print("HERE IS THE ORIGINAL NOTICE:")
-        # print(original_response.notice_text)
-        # simplified_response = simplify_notice_language(original_response.notice_text)
-        # print("HERE IS THE SIMPLIFIED NOTICE:")
-        # print(simplified_response.notice_text)
-
     output = []
     for file_path in glob.glob("context_documents/*.txt"):
         with open(file_path) as file:
