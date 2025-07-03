@@ -12,7 +12,7 @@ def hydrate_document_manifest(manifest_path: str) -> Manifest:
     with open(manifest_path, "r") as mf:
         manifest = json.loads(mf.read())
     document_models = []
-    for document in manifest:
+    for document in manifest["documents"]:
         if "text" not in document.keys() or document["text"] is None:
             with open(document["path"], "r") as fp:
                 document["text"] = fp.read()

@@ -5,7 +5,8 @@ from dotenv import load_dotenv
 
 from se_eval_eval.logger import logger
 from se_eval_eval.utility import hydrate_document_manifest
-from se_eval_eval.analyize import generate_analysis_from_manifest
+from se_eval_eval.analysis import generate_analysis_from_manifest
+from se_eval_eval.evaluation import run_experiments_from_manifest
 
 """
 Main entrypoint script for interacting with the repo.
@@ -21,7 +22,7 @@ CMD_ANALYZE = "analyze"
 # Run the evaluation process specifying experiments or as an entire suite.
 CMD_EVALUATE = "evaluate"
 # A list of supported Ollama models that should be downloaded for complete repository usage.
-SUPPORTED_OLLAMA_MODELS = ["deepseek-r1:8b", "llama3.1:8b"]
+SUPPORTED_OLLAMA_MODELS = ["llama3.1:8b"]
 
 
 def handle_process(args: argparse.Namespace) -> None:
@@ -49,17 +50,15 @@ def handle_process(args: argparse.Namespace) -> None:
         else:
             print(hydrated_manifest.model_dump_json())
     if args.cmd == CMD_EVALUATE:
-        logger.info(f"EVALUATION COMPLETE!")
-        # metrics = []
-        # if args.metrics is not None:
-        #     metrics = args.metrics.split(",")
-        # results = run_experiments_from_manifest(hydrated_manifest, metrics)
-        # json = model_list_to_json(results)
-        # if args.output_path is not None:
-        #     with open(args.output_path, "w", encoding="utf-8") as f:
-        #         f.write(json)
-        # else:
-        #     print(json)
+        metrics = []
+        if args.metrics is not None:
+            metrics = args.metrics.split(",")
+        run_experiments_from_manifest(hydrated_manifest, metrics)
+        if args.output_path is not None:
+            with open(args.output_path, "w", encoding="utf-8") as f:
+                f.write(hydrated_manifest.model_dump_json())
+        else:
+            print(hydrated_manifest.model_dump_json())
 
 
 def assert_ollama_models_installed():

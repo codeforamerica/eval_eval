@@ -38,7 +38,7 @@ Run translation:
 NB: Running the translation command is not required for contributing evaluations. Translations are available on [Google Drive](https://drive.google.com/drive/folders/1Ytaw5QCVPBu2KzkCdTRkts00i2m1WE2P?usp=drive_link).
 
 ## Adding Dependencies
-You will almost certainly need to add additional Python packages to contribute evaluations. This repository uses pip and pip-chill to manage dependencies. To add a new dependency run `.venv/bin/pip install <package>`. When you are ready to commit your work, add your dependencies to our requirements file (requirements.txt) by running `.venv/bin/pip-chill > requirements.txt`.
+You will almost certainly need to add additional Python packages to contribute evaluations. This repository uses pip and pip-chill to manage dependencies. To add a new dependency run `.venv/bin/pip install <package>`. When you are ready to commit your work, add your dependencies to our requirements file (requirements.txt) by running `.venv/bin/pip-chill > requirements.txt`. Pip will try to add our local package `se-eval-eval==0.0.0` to the requirements. Please remove this dependency from the requirements file, as it will break our installation process.
 
 ## Adding Providers and Models
 Feel free to add Python packages necessary to support other LLM Providers. See "Adding Dependencies" above. Often, this is handled by the evaluation framework. If you need to add support for a provider that has not been used yet in the project, make sure to include the API key in your .env file, the example.env file and shared LastPass record.

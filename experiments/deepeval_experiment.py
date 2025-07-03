@@ -1,13 +1,13 @@
 import os
 from typing import List
 
-from deepeval.metrics import SummarizationMetric
-from deepeval.models import GeminiModel
+from deepeval.metrics import FaithfulnessMetric
+from deepeval.models import OllamaModel
 from deepeval.test_case import LLMTestCase
 from pydantic import BaseModel
 
 from se_eval_eval.evaluation import MetricExperimentBase
-from se_eval_eval.schema import Scenario
+from se_eval_eval.schema import Analysis, EvaluationResult
 
 """
 Implements metrics from the DeepEval framework.
@@ -18,41 +18,31 @@ Resources:
 - [Summary Metric](https://github.com/confident-ai/deepeval/tree/main/deepeval/metrics/summarization)
 """
 
+class DeepEvalFaithfulnessExperiment(MetricExperimentBase):
 
-def _convert_model_list(list: List) -> list:
-    return [dict(item) if isinstance(item, BaseModel) else item for item in list]
-
-
-class DeepMetricSummaryExperiment(MetricExperimentBase):
-
-    METRIC_NAME = "deep_eval_summarization"
+    METRIC_NAME = "deep_eval_faithfulness"
 
     @staticmethod
-    def run_eval(scenario: Scenario):
-        model = GeminiModel(
-            model_name="gemini-2.5-pro-preview-03-25",
-            api_key=os.getenv("GOOGLE_API_KEY"),
+    def run_eval(analysis: Analysis, notice_text: str, notice_path: str) -> EvaluationResult | List[EvaluationResult]:
+        model = OllamaModel("llama3.1:8b")
+        results = []
+        text_to_evaluate = ""
+        for item in analysis.analysis_results:
+            text_to_evaluate += item.reason
+        metric = FaithfulnessMetric(
+            model=model,
+            truths_extraction_limit=10
         )
         test_case = LLMTestCase(
-            input=scenario.baseline_translation.text,
-            actual_output=scenario.evaluation_translation.text,
-        )
-        metric = SummarizationMetric(
-            model=model,
+            input="",
+            retrieval_context=[notice_text],
+            actual_output=text_to_evaluate,
         )
         metric.measure(test_case)
-        details = {
-            "truths": metric.truths,
-            "claims": metric.claims,
-            "assessment_questions": _convert_model_list(metric.assessment_questions),
-            "coverage_verdicts": _convert_model_list(metric.coverage_verdicts),
-            "alignment_verdicts": _convert_model_list(metric.alignment_verdicts),
-        }
-        scenario.add_result(
-            {
-                "metric_name": DeepMetricSummaryExperiment.METRIC_NAME,
-                "score": metric.score,
-                "reason": metric.reason,
-                "details": details,
-            }
-        )
+        results.append(EvaluationResult(
+            metric_name=DeepEvalFaithfulnessExperiment.METRIC_NAME,
+            score=metric.score,
+            reason=metric.reason,
+            llm_model_name=model.model_name
+        ))
+        return results
