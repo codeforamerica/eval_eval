@@ -1,31 +1,46 @@
 import textwrap
 
-ANALYSIS_PROMPT = textwrap.dedent("""
-    Answer the following questions about the provided Supplemental Nutrition Assistance Program (SNAP) client notice.
 
-    Instructions: 
-        - Be sure to answer all 10 questions
-        - Restate the question
-        - Provide a "Yes", "No" or "IDK" answer
-        - Always provide a reason for your answer   
-        - Use "IDK" when information might be present but is unclear or ambiguous
-        - Use "No" when information is clearly absent
-        - For the plain language question, consider the overall readability, not just individual elements
+def prompt_1(notice: str) -> str:
+    return textwrap.dedent(
+        f"""
+        The following document is a sample California Supplemental Nutrition Assistance Program (SNAP) notice of benefits approval. 
 
-    Questions:
-        - Does the notice clearly state what specific action the state plans to take (e.g., benefit approval, reduction, termination, denial)?
-        - Does the notice explain the specific factual or legal basis for the proposed action?
-        - Does the notice include the household's right to request a fair hearing?
-        - Does the notice include a telephone number for the SNAP office that is either toll-free OR accepts collect calls for households outside the local calling area?
-        - Does the notice include either a specific contact person's name OR a general contact role/department for additional information?
-        - Does the notice include the availability of continued benefits?
-        - Does the notice include the liability of the household for any over issuances received while awaiting a fair hearing if the hearing official's decision is adverse to the household?
-        - Does the notice inform the household about the availability of free legal representation or advocacy services?
-        - Is the notice written in plain language that would be understandable to someone with a 6th grade reading level or below? Consider sentence length, word complexity, jargon usage, and overall clarity.
-        - The above questions represent best practices for writing SNAP client notices. Overall, does this notice meet those requirements? 
+        **Instructions:**
+        Write a 2-3 sentence summary of the notice and evaluate the document's quality by answering questions about it in 2-3 sentences. 
 
-    Notice:
-    {notice}
+        **Questions:**
+        - What actions are required by the recipient?
+        - Is the document primarily informational or is action required?
+        - Is this notice written in plain language, at 6th-grade reading level or lower?
+        - How could this document be more effective for the recipient?
 
-    IMPORTANT: remember to ANSWER ALL 10 QUESTIONS
-""")
+        **Document to Analyze:**
+        {notice}
+    """
+    )
+
+
+def prompt_2(notice: str) -> str:
+    return textwrap.dedent(
+        f"""
+        You are analyzing a California Supplemental Nutrition Assistance Program (SNAP) notice of benefits approval. Your goal is to provide a clear summary and thorough evaluation of the document's effectiveness for the recipient.
+
+        **Document Summary:**
+        Write a 2-3 sentence summary that captures the key information and purpose of this notice.
+
+        **Document Analysis:**
+        Answer each question below with 2-3 well-reasoned sentences that demonstrate specific analysis of the document:
+
+        - **Required Actions**: What specific actions, if any, must the recipient take after receiving this notice? Include deadlines and consequences of inaction.
+
+        - **Document Classification**: Determine whether this document is primarily informational (notifying the recipient of status or updates) or action-required (demanding a response to maintain benefits). Explain the potential consequences if the recipient does not respond to or act on this document.
+
+        - **Plain Language Assessment**: Evaluate whether this notice uses plain language appropriate for a 6th-grade reading level. Consider vocabulary complexity, sentence structure, and use of jargon or technical terms.
+
+        - **Effectiveness Improvements**: Identify the most significant changes that would make this document more effective for the recipient, focusing on clarity, accessibility, and actionability.
+
+        **Document to Analyze:**
+        {notice}
+    """
+    )

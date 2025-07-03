@@ -3,10 +3,10 @@ import argparse
 import ollama
 from dotenv import load_dotenv
 
-from se_eval_eval.logger import logger
-from se_eval_eval.utility import hydrate_document_manifest
 from se_eval_eval.analysis import generate_analysis_from_manifest
 from se_eval_eval.evaluation import run_experiments_from_manifest
+from se_eval_eval.logger import logger
+from se_eval_eval.utility import hydrate_document_manifest
 
 """
 Main entrypoint script for interacting with the repo.
@@ -16,13 +16,12 @@ Run .venv/bin/python main.py --help for more information.
 
 load_dotenv()
 
-# Run the translation process taking a manifest.json file and returning a modified version.
-# Supports initial English translation in text, txt files or PDFs.
+# Run the analysis process taking a manifest.json file and returning a modified version.
 CMD_ANALYZE = "analyze"
-# Run the evaluation process specifying experiments or as an entire suite.
+# Run the evaluation process specifying individual metrics or as an entire suite.
 CMD_EVALUATE = "evaluate"
 # A list of supported Ollama models that should be downloaded for complete repository usage.
-SUPPORTED_OLLAMA_MODELS = ["llama3.1:8b"]
+SUPPORTED_OLLAMA_MODELS = ["llama3.1:8b", "deepseek-r1:8b"]
 
 
 def handle_process(args: argparse.Namespace) -> None:

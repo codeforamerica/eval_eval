@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import List
 
 from se_eval_eval.logger import logger
-from se_eval_eval.schema import Analysis, Manifest, EvaluationResult
+from se_eval_eval.schema import Analysis, EvaluationResult, Manifest
 
 """
 Utilities for running evaluation experiments.
@@ -17,7 +17,9 @@ class MetricExperimentBase(ABC):
 
     @staticmethod
     @abstractmethod
-    def run_eval(analysis: Analysis, notice_text: str, notice_path: str) -> EvaluationResult | List[EvaluationResult]:
+    def run_eval(
+        analysis: Analysis, notice_text: str, notice_path: str
+    ) -> EvaluationResult | List[EvaluationResult]:
         pass
 
 
@@ -29,15 +31,17 @@ def get_experiments(experiment_dir: str) -> List[MetricExperimentBase]:
             module = import_module(f"{experiment_dir}.{module_name}")
             for name, obj in inspect.getmembers(module):
                 if (
-                        inspect.isclass(obj)
-                        and issubclass(obj, MetricExperimentBase)
-                        and obj != MetricExperimentBase
+                    inspect.isclass(obj)
+                    and issubclass(obj, MetricExperimentBase)
+                    and obj != MetricExperimentBase
                 ):
                     experiments.append(obj)
     return experiments
 
 
-def run_experiments_from_manifest(hydrated_manifest: Manifest, metrics: list, **kwargs) -> Manifest:
+def run_experiments_from_manifest(
+    hydrated_manifest: Manifest, metrics: list, **kwargs
+) -> Manifest:
     experiment_classes = get_experiments(kwargs.get("experiment_path", "experiments"))
     if len(metrics) > 0:
         filtered_experiment_classes = []
@@ -57,7 +61,9 @@ def run_experiments_from_manifest(hydrated_manifest: Manifest, metrics: list, **
     for document in hydrated_manifest.documents:
         for analysis in document.notice_analysis:
             for experiment in experiment_classes:
-                logger.info(f"Beginning: {experiment.METRIC_NAME} evaluating analysis of {document.path} produced by {analysis.llm_model_name}")
+                logger.info(
+                    f"Beginning: {experiment.METRIC_NAME} evaluating analysis of {document.path} produced by {analysis.llm_model_name} with {analysis.prompt_name}"
+                )
                 results = experiment.run_eval(analysis, document.text, document.path)
                 if type(results) is not list:
                     results = [results]

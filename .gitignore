@@ -94,3 +94,5 @@ Thumbs.db
 # Include DeepEval assets.
 .deepeval_telemetry.txt
 .deepeval
+*.json
+documents
