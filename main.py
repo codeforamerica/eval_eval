@@ -26,7 +26,7 @@ SUPPORTED_OLLAMA_MODELS = ["llama3.1:8b", "deepseek-r1:8b"]
 
 def handle_process(args: argparse.Namespace) -> None:
     """
-    Runs either the "translate" or "evaluate" command.
+    Runs either the "analyze" or "evaluate" command.
 
     Parameters
     ----------
@@ -88,7 +88,7 @@ def get_args() -> argparse.Namespace:
         "cmd",
         type=str,
         choices=[CMD_ANALYZE, CMD_EVALUATE],
-        help=f"Command to run {CMD_ANALYZE} or {CMD_EVALUATE}",
+        help=f"Runs a {CMD_ANALYZE} or {CMD_EVALUATE} command that manipulates a manifest json file.",
     )
     parser.add_argument(
         "manifest_path", type=str, help="Manifest JSON file to run command with"

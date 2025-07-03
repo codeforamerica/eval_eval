@@ -94,5 +94,7 @@ Thumbs.db
 # Include DeepEval assets.
 .deepeval_telemetry.txt
 .deepeval
+
+# Other things likely to exist that we don't want in VCS.
 *.json
 documents
