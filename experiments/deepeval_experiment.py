@@ -42,11 +42,13 @@ class DeepEvalFaithfulnessExperiment(MetricExperimentBase):
                 actual_output=text[1],
             )
             metric.measure(test_case)
-            results.append(EvaluationResult(
-                metric_name=DeepEvalFaithfulnessExperiment.METRIC_NAME,
-                score=metric.score,
-                reason=metric.reason,
-                llm_model_name=model.model_name,
-                related_analysis=text[0]
-            ))
+            results.append(
+                EvaluationResult(
+                    metric_name=DeepEvalFaithfulnessExperiment.METRIC_NAME,
+                    score=metric.score,
+                    reason=metric.reason,
+                    llm_model_name=model.model_name,
+                    related_analysis=text[0],
+                )
+            )
         return results
