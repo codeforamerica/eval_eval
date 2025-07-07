@@ -46,7 +46,7 @@ NB: Running the analysis command is not required for contributing evaluations. M
 You will almost certainly need to add additional Python packages to contribute evaluations. This repository uses pip and pip-chill to manage dependencies. To add a new dependency run `.venv/bin/pip install <package>`. When you are ready to commit your work, add your dependencies to our requirements file (requirements.txt) by running `.venv/bin/pip-chill > requirements.txt`. Pip will try to add our local package `se-eval-eval==0.0.0` to the requirements. Please remove this dependency from the requirements file, as it will break our installation process.
 
 ## Adding Providers and Models
-Feel free to add Python packages necessary to support other LLM Providers. See "Adding Dependencies" above. Often, this is handled by the evaluation framework. If you need to add support for a provider that has not been used yet in the project, make sure to include the API key in your .env file, the example.env file and shared LastPass record. Entries in the .env file will be included as environment variables automatically (access with `os.getenv("API_KEY")`).
+Feel free to add Python packages necessary to support other LLM Providers. See "Adding Dependencies" above. Often, this is handled by the evaluation framework. If you need to add support for a provider that has not been used yet in the project, make sure to include the API key in your `.env` file and `example.env` file. Entries in the .env file will be included as environment variables automatically (access with `os.getenv("API_KEY")`).
 
 If you need to download or install an additional non-Ollama model, please do so in your experiment file.
 

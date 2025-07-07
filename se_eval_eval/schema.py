@@ -26,6 +26,9 @@ class EvaluationResult(BaseModel):
     llm_model_name: Optional[str] = Field(
         default=None, description="The name of the model used for the evaluation."
     )
+    related_analysis: Optional[str] = Field(
+        default="all",
+    )
 
 
 class AnalysisQuestion(BaseModel):

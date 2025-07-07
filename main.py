@@ -40,7 +40,7 @@ def handle_process(args: argparse.Namespace) -> None:
         assert_ollama_models_installed()
         if args.metrics is not None:
             raise ValueError(
-                "The --metrics option cannot be used with the translation command."
+                "The --metrics option cannot be used with the analyze command."
             )
         generate_analysis_from_manifest(hydrated_manifest, SUPPORTED_OLLAMA_MODELS)
         if args.output_path is not None:
