@@ -1,7 +1,9 @@
-# SE EVAL^2
-SE Eval^2 (Eval Eval) is a Solutions Engineering and Data Science Discovery Cycle project that aims to assess LLM evaluation libraries and services. Here we will implement and compare metrics for a shared AI problem space. The chosen problem space is Supplemental Nutrition Assistance Program (SNAP) notice quality analysis. 
+# EVAL EVAL
+EVAL EVAL (Eval^2) is a Solutions Engineering and Data Science Discovery Cycle project that aims to assess LLM evaluation libraries and services. Here we will implement and compare metrics for a shared AI problem space. The chosen problem space is Supplemental Nutrition Assistance Program (SNAP) notice quality analysis. 
 
-Given ten sample SNAP notices this repository produces sample analysis with model and prompt iteration. The analysis functions as an input to evaluate. Creating domain knowledge of LLM-evaluation frameworks and comparing implementation factors is the goal of the project. Creating a SNAP notice analysis tool is not.
+Given ten sample SNAP notices this repository produces sample analysis with model and prompt iteration. The analysis functions as an input to evaluate. Creating domain knowledge of LLM-evaluation frameworks and comparing implementation factors is the goal of the project. Improving the SNAP notice analysis is only an objective when it enables evaluation.
+
+The command line tools in this repository add information to a JSON manifest over analysis and evaluation steps. The manifest file's components are [represented by Pydantic models](se_eval_eval/schema.py), which allows for easy validation and use with LLMs. Contributors should add evaluations to the [experiments directory](experiments) as described below.
 
 ## How to Contribute
 To contribute to the Discovery Cycle, choose an evaluation and/or telemetry framework and create a script in the "experiments" folder. If you'd like, [a template script](experiments/template.py) has been provided for convenience.
@@ -38,9 +40,7 @@ Run analysis:
 ```shell
 .venv/bin/python main.py analysis manifest.json --output-path="results.json"
 ```
-NB: Running the analysis command is not required for contributing evaluations. Translations are available on [Google Drive](https://drive.google.com/drive/folders/1Ytaw5QCVPBu2KzkCdTRkts00i2m1WE2P?usp=drive_link).
-
-TODO: Update link
+NB: Running the analysis command is not required for contributing evaluations. Manifests with and without analysis and notice documents are available on [Google Drive](https://drive.google.com/drive/folders/1Ejh-i1ZrF96tY2HBcuOXHsXussracltp?usp=drive_link).
 
 ## Adding Dependencies
 You will almost certainly need to add additional Python packages to contribute evaluations. This repository uses pip and pip-chill to manage dependencies. To add a new dependency run `.venv/bin/pip install <package>`. When you are ready to commit your work, add your dependencies to our requirements file (requirements.txt) by running `.venv/bin/pip-chill > requirements.txt`. Pip will try to add our local package `se-eval-eval==0.0.0` to the requirements. Please remove this dependency from the requirements file, as it will break our installation process.
