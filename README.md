@@ -15,7 +15,7 @@ To leverage your machine's GPU, we've opted to run this experiment with a Python
 1. Install Ollama with homebrew: `brew install ollama`
 2. Pull any Ollama models ollama pull "model name". Analysis is currently using "llama3.1:8b" and "deepseek-r1:8b".
 3. Setup a Python virtual environment: `python3 -m venv .venv && chmod +x .venv/bin/activate && .venv/bin/activate`
-4. Install requirements `.venv/bin/pip install -r requirements.txt && .venv/bin/pip install -e .`
+4. Install requirements `.venv/bin/pip install -e . && .venv/bin/pip install -r requirements.txt`
 5. Copy example.env to .env and copy any API keys down from our shared LastPass record.
 
 NB: Steps 1 and 2 are only required if you'd like to run the analysis command or write evaluation with Ollama models.
@@ -38,7 +38,7 @@ Run a single experiment:
 
 Run analysis:
 ```shell
-.venv/bin/python main.py analysis manifest.json --output-path="results.json"
+.venv/bin/python main.py analyze manifest.json --output-path="results.json"
 ```
 NB: Running the analysis command is not required for contributing evaluations. Manifests with and without analysis and notice documents are available on [Google Drive](https://drive.google.com/drive/folders/1Ejh-i1ZrF96tY2HBcuOXHsXussracltp?usp=drive_link).
 
