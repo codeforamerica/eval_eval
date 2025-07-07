@@ -2,24 +2,14 @@ import inspect
 from abc import ABC, abstractmethod
 from importlib import import_module
 from pathlib import Path
-from typing import List, Literal
+from typing import List
 
 from se_eval_eval.logger import logger
-from se_eval_eval.schema import (
-    SUPPORTED_LANGUAGES,
-    Document,
-    Scenario,
-    Translation,
-)
+from se_eval_eval.schema import Analysis, EvaluationResult, Manifest
 
 """
 Utilities for running evaluation experiments.
 """
-
-EVALUATION_BATCH_SIZE = 2
-
-EVAL_LANGUAGES = SUPPORTED_LANGUAGES
-EVAL_LANGUAGES.remove("English")
 
 
 class MetricExperimentBase(ABC):
@@ -27,7 +17,9 @@ class MetricExperimentBase(ABC):
 
     @staticmethod
     @abstractmethod
-    def run_eval(scenario: Scenario):
+    def run_eval(
+        analysis: Analysis, notice_text: str, notice_path: str
+    ) -> EvaluationResult | List[EvaluationResult]:
         pass
 
 
@@ -48,8 +40,8 @@ def get_experiments(experiment_dir: str) -> List[MetricExperimentBase]:
 
 
 def run_experiments_from_manifest(
-    hydrated_manifest: List[Document], metrics: list, **kwargs
-) -> List[Scenario]:
+    hydrated_manifest: Manifest, metrics: list, **kwargs
+) -> Manifest:
     experiment_classes = get_experiments(kwargs.get("experiment_path", "experiments"))
     if len(metrics) > 0:
         filtered_experiment_classes = []
@@ -63,108 +55,16 @@ def run_experiments_from_manifest(
                 )
             filtered_experiment_classes.append(experiment_class)
         experiment_classes = filtered_experiment_classes
-        logger.info(f"Evaluating experiments: {",".join(metrics)}")
+        logger.info(f"Evaluating metrics: {",".join(metrics)}")
     else:
-        logger.info(f"Evaluating experiments: All")
-    # 1. human vs aya simple prompt
-    all_scenarios = []
-    for language in EVAL_LANGUAGES:
-        scenarios = _run_scenario(
-            experiment_classes,
-            hydrated_manifest,
-            {"language": language, "author": "baseline"},
-            {"language": language, "author": "aya-expanse:8b"},
-        )
-        all_scenarios.extend(scenarios)
-        # 2. human vs. nemo simple prompt
-        scenarios = _run_scenario(
-            experiment_classes,
-            hydrated_manifest,
-            {"language": language, "author": "baseline"},
-            {"language": language, "author": "mistral-nemo:latest"},
-        )
-        all_scenarios.extend(scenarios)
-        # 3. human vs. Google Translate
-        scenarios = _run_scenario(
-            experiment_classes,
-            hydrated_manifest,
-            {"language": language, "author": "baseline"},
-            {"language": language, "author": "google_translate"},
-        )
-        all_scenarios.extend(scenarios)
-    # @todo 3. human vs. aya better prompt
-    # @todo 4. human vs. nemo better prompt
-    return all_scenarios
-
-
-def _run_scenario(
-    experiment_classes: List[MetricExperimentBase],
-    hydrated_manifest: List[Document],
-    from_condition: dict,
-    to_condition: dict,
-) -> List[Scenario]:
-    all_scenarios = []
-    document_scenarios = _get_scenario(
-        _get_scenario_name(from_condition, to_condition),
-        hydrated_manifest,
-        from_condition,
-        to_condition,
-    )
-    all_scenarios.extend(document_scenarios)
-
-    for experiment_class in experiment_classes:
-        for scenario in all_scenarios:
-            logger.info(
-                f"Running experiment: {experiment_class.METRIC_NAME} for scenario: {scenario.name}"
-            )
-            experiment_class.run_eval(scenario)
-            logger.info("Experiment complete!")
-    return all_scenarios
-
-
-def _filter_translations(conditions: dict) -> callable:
-    def _filter(translation: Translation) -> bool:
-        result = True
-        keys = conditions.keys()
-        if "language" in keys and translation.language != conditions["language"]:
-            result = False
-        if "author" in keys and translation.author != conditions["author"]:
-            result = False
-        if "prompt" in keys and translation.prompt != conditions["prompt"]:
-            result = False
-        return result
-
-    return _filter
-
-
-def _get_scenario_name(from_condition: dict, to_condition: dict) -> str:
-    bits = list(from_condition.values()) + list(to_condition.values())
-    bits = filter(lambda x: x != from_condition["language"], bits)
-    return "_".join(bits) + "_" + from_condition["language"].lower()
-
-
-def _get_scenario(
-    name: str, manifest: List[Document], from_conditions: dict, to_conditions: dict
-) -> List[Scenario]:
-    scenarios = []
-    for document in manifest:
-        # @todo assert only one value returned for each.
-        from_translation = list(
-            filter(_filter_translations(from_conditions), document.translations)
-        )
-        to_translation = list(
-            filter(_filter_translations(to_conditions), document.translations)
-        )
-        if len(from_translation) == 0 or len(to_translation) == 0:
-            logger.warning(
-                f"Skipping scenario {name} cannot find required translations in manifest for {document.en_name}."
-            )
-            continue
-        scenarios.append(
-            Scenario(
-                name=name,
-                baseline_translation=from_translation.pop(),
-                evaluation_translation=to_translation.pop(),
-            )
-        )
-    return scenarios
+        logger.info(f"Evaluating metrics: All")
+    for document in hydrated_manifest.documents:
+        for analysis in document.notice_analysis:
+            for experiment in experiment_classes:
+                logger.info(
+                    f"Beginning: {experiment.METRIC_NAME} evaluating analysis of {document.path} produced by {analysis.llm_model_name} with {analysis.prompt_name}"
+                )
+                results = experiment.run_eval(analysis, document.text, document.path)
+                if type(results) is not list:
+                    results = [results]
+                analysis.evaluation_results.extend(results)

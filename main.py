@@ -3,11 +3,10 @@ import argparse
 import ollama
 from dotenv import load_dotenv
 
+from se_eval_eval.analysis import generate_analysis_from_manifest
 from se_eval_eval.evaluation import run_experiments_from_manifest
-from se_eval_eval.google_translation import google_add_translations
-from se_eval_eval.llm_translation import llm_add_translations
 from se_eval_eval.logger import logger
-from se_eval_eval.utility import hydrate_document_manifest, model_list_to_json
+from se_eval_eval.utility import hydrate_document_manifest
 
 """
 Main entrypoint script for interacting with the repo.
@@ -17,18 +16,17 @@ Run .venv/bin/python main.py --help for more information.
 
 load_dotenv()
 
-# Run the translation process taking a manifest.json file and returning a modified version.
-# Supports initial English translation in text, txt files or PDFs.
-CMD_TRANSLATE = "translate"
-# Run the evaluation process specifying experiments or as an entire suite.
+# Run the analysis process taking a manifest.json file and returning a modified version.
+CMD_ANALYZE = "analyze"
+# Run the evaluation process specifying individual metrics or as an entire suite.
 CMD_EVALUATE = "evaluate"
 # A list of supported Ollama models that should be downloaded for complete repository usage.
-SUPPORTED_OLLAMA_MODELS = ["aya-expanse:8b", "mistral-nemo:latest"]
+SUPPORTED_OLLAMA_MODELS = ["llama3.1:8b", "deepseek-r1:8b"]
 
 
 def handle_process(args: argparse.Namespace) -> None:
     """
-    Runs either the "translate" or "evaluate" command.
+    Runs either the "analyze" or "evaluate" command.
 
     Parameters
     ----------
@@ -38,37 +36,32 @@ def handle_process(args: argparse.Namespace) -> None:
     logger.info(f"Processing manifest: {args.manifest_path}")
     hydrated_manifest = hydrate_document_manifest(args.manifest_path)
     logger.info("Successfully hydrated manifest")
-    if args.cmd == CMD_TRANSLATE:
+    if args.cmd == CMD_ANALYZE:
         assert_ollama_models_installed()
         if args.metrics is not None:
             raise ValueError(
-                "The --metrics option cannot be used with the translation command."
+                "The --metrics option cannot be used with the analyze command."
             )
-        llm_add_translations(hydrated_manifest, "aya-expanse:8b")
-        llm_add_translations(hydrated_manifest, "mistral-nemo:latest")
-        google_add_translations(hydrated_manifest)
-        json = model_list_to_json(hydrated_manifest)
+        generate_analysis_from_manifest(hydrated_manifest, SUPPORTED_OLLAMA_MODELS)
         if args.output_path is not None:
             with open(args.output_path, "w", encoding="utf-8") as f:
-                f.write(json)
+                f.write(hydrated_manifest.model_dump_json())
         else:
-            print(json)
+            print(hydrated_manifest.model_dump_json())
     if args.cmd == CMD_EVALUATE:
         metrics = []
         if args.metrics is not None:
             metrics = args.metrics.split(",")
-        results = run_experiments_from_manifest(hydrated_manifest, metrics)
-        json = model_list_to_json(results)
+        run_experiments_from_manifest(hydrated_manifest, metrics)
         if args.output_path is not None:
             with open(args.output_path, "w", encoding="utf-8") as f:
-                f.write(json)
+                f.write(hydrated_manifest.model_dump_json())
         else:
-            print(json)
+            print(hydrated_manifest.model_dump_json())
 
 
 def assert_ollama_models_installed():
     installed_model_names = []
-    logger.info(ollama.list())
     for model in ollama.list().models:
         installed_model_names.append(model.model)
     missing_models = set(SUPPORTED_OLLAMA_MODELS) - set(installed_model_names)
@@ -94,8 +87,8 @@ def get_args() -> argparse.Namespace:
     parser.add_argument(
         "cmd",
         type=str,
-        choices=[CMD_TRANSLATE, CMD_EVALUATE],
-        help=f"Command to run {CMD_TRANSLATE} or {CMD_EVALUATE}",
+        choices=[CMD_ANALYZE, CMD_EVALUATE],
+        help=f"Runs a {CMD_ANALYZE} or {CMD_EVALUATE} command that manipulates a manifest json file.",
     )
     parser.add_argument(
         "manifest_path", type=str, help="Manifest JSON file to run command with"
