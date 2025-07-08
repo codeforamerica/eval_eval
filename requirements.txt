@@ -5,5 +5,5 @@ dotenv==0.9.9
 isort==6.0.1
 jaraco.collections==5.1.0
 pip-chill==1.0.3
-se-eval-eval==0.0.0
+eval-eval==0.0.0
 tomli==2.0.1
