@@ -1,7 +1,7 @@
 from typing import List
 
-from se_eval_eval.evaluation import MetricExperimentBase
-from se_eval_eval.schema import Analysis, EvaluationResult
+from eval_eval.evaluation import MetricExperimentBase
+from eval_eval.schema import Analysis, EvaluationResult
 
 """
 This is a space to put experiments for a given service or evaluation technique.

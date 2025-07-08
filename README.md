@@ -3,7 +3,7 @@ EVAL EVAL (Eval^2) is a Solutions Engineering and Data Science Discovery Cycle p
 
 Given ten sample SNAP notices this repository produces sample analysis with model and prompt iteration. The analysis functions as an input to evaluate. Creating domain knowledge of LLM-evaluation frameworks and comparing implementation factors is the goal of the project. Improving the SNAP notice analysis is only an objective when it enables evaluation.
 
-The command line tools in this repository add information to a JSON manifest over analysis and evaluation steps. The manifest file's components are [represented by Pydantic models](se_eval_eval/schema.py), which allows for easy validation and use with LLMs. Contributors should add evaluations to the [experiments directory](experiments) as described below.
+The command line tools in this repository add information to a JSON manifest over analysis and evaluation steps. The manifest file's components are [represented by Pydantic models](eval_eval/schema.py), which allows for easy validation and use with LLMs. Contributors should add evaluations to the [experiments directory](experiments) as described below.
 
 ## How to Contribute
 To contribute to the Discovery Cycle, choose an evaluation and/or telemetry framework and create a script in the "experiments" folder. If you'd like, [a template script](experiments/template.py) has been provided for convenience.

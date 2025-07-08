@@ -4,8 +4,8 @@ from importlib import import_module
 from pathlib import Path
 from typing import List
 
-from se_eval_eval.logger import logger
-from se_eval_eval.schema import Analysis, EvaluationResult, Manifest
+from eval_eval.logger import logger
+from eval_eval.schema import Analysis, EvaluationResult, Manifest
 
 """
 Utilities for running evaluation experiments.

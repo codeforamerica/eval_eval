@@ -3,10 +3,10 @@ requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "se_eval_eval"
+name = "eval_eval"
 description = "Helpers for evaluating LLM Eval frameworks."
 requires-python = ">=3.12"
 dynamic = ["version"]
 
 [tool.setuptools]
-packages = ["se_eval_eval"]
+packages = ["eval_eval"]

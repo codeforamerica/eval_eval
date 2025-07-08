@@ -1,6 +1,6 @@
 import json
 
-from se_eval_eval.schema import Document, Manifest
+from eval_eval.schema import Document, Manifest
 
 """
 Reusable utilities for preprocessing and evaluation.

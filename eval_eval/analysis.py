@@ -2,9 +2,9 @@ import asyncio
 
 import ollama
 
-from se_eval_eval.logger import logger
-from se_eval_eval.prompts.analysis import prompt_1, prompt_2
-from se_eval_eval.schema import Analysis, Document, Manifest
+from eval_eval.logger import logger
+from eval_eval.prompts.analysis import prompt_1, prompt_2
+from eval_eval.schema import Analysis, Document, Manifest
 
 """
 Utilities for running LLM-based analysis on the notice documents.
