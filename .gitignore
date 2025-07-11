@@ -100,3 +100,4 @@ Thumbs.db
 documents
 
 *.swp
+mlruns/
