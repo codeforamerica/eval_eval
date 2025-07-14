@@ -2,8 +2,11 @@ backports.tarfile==1.2.0
 black==25.1.0
 deepeval==3.2.3
 dotenv==0.9.9
+inflect==7.3.1
 isort==6.0.1
+jaraco-functools==4.2.1
 jaraco.collections==5.1.0
+mlflow==3.1.1
 pip-chill==1.0.3
-eval-eval==0.0.0
+tiktoken==0.9.0
 tomli==2.0.1
