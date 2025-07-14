@@ -2,6 +2,7 @@ backports.tarfile==1.2.0
 black==25.1.0
 deepeval==3.2.3
 dotenv==0.9.9
+eval-eval==0.0.0
 inflect==7.3.1
 isort==6.0.1
 jaraco-functools==4.2.1
