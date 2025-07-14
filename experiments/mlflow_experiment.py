@@ -61,7 +61,7 @@ class MLFlowFaithfulnessExperiment(MetricExperimentBase):
             metric_name=MLFlowFaithfulnessExperiment.METRIC_NAME,
             score=outputs['faithfulness/v1/score'][i],
             related_alanysis=outputs['outputs'][i],
-            llm_model_name='openai'
+            llm_model_name='openai:/gpt-4.1-mini'
           )
       )
 
