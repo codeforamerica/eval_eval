@@ -64,7 +64,7 @@ class MLFlowFaithfulnessExperiment(MetricExperimentBase):
           EvaluationResult(
             metric_name=MLFlowFaithfulnessExperiment.METRIC_NAME,
             score=outputs['faithfulness/v1/score'][i],
-            related_alanysis=outputs['outputs'][i],
+            related_analysis=outputs['outputs'][i],
             llm_model_name=MLFlowFaithfulnessExperiment.MODEL_NAME,
           )
       )
