@@ -4,16 +4,20 @@ import mlflow
 from mlflow.metrics.genai import faithfulness
 import pandas as pd
 
+from eval_eval.evaluation import MetricExperimentBase
+from eval_eval.schema import Analysis, EvaluationResult
+
 class MLFlowFaithfulnessExperiment(MetricExperimentBase):
 
     METRIC_NAME = "mlflow_faithfulness"
+    MODEL_NAME = "openai:/gpt-4.1-mini"
 
     @staticmethod
     def run_eval(
         analysis: Analysis, notice_text: str, notice_path: str
     ) -> EvaluationResult | List[EvaluationResult]:
 
-      faithfulness_metric = faithfulness(model="openai:/gpt-4.1-mini")
+      faithfulness_metric = faithfulness(model=MLFlowFaithfulnessExperiment.MODEL_NAME)
 
       # MLFlow expects to evaluate "live"; that is, it expects a set of inputs and an "LLM".
       # We can simulate the LLM using a simply python function that returns the pre-computed outputs.
@@ -61,7 +65,7 @@ class MLFlowFaithfulnessExperiment(MetricExperimentBase):
             metric_name=MLFlowFaithfulnessExperiment.METRIC_NAME,
             score=outputs['faithfulness/v1/score'][i],
             related_alanysis=outputs['outputs'][i],
-            llm_model_name='openai:/gpt-4.1-mini'
+            llm_model_name=MLFlowFaithfulnessExperiment.MODEL_NAME,
           )
       )
 
