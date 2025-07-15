@@ -35,13 +35,14 @@ class OpikHallucinationExperiment(MetricExperimentBase):
         for i, text in enumerate(text_to_evaluate):
             logger.info(f"Opik Hallucination: Evaluating step {i + 1} of {len(text_to_evaluate)}")
 
-            metric.score(input=text[0], output=text[1], context=text[2])
+            result = metric.score(input=text[0], output=text[1], context=text[2])
             results.append(
                 EvaluationResult(
                     metric_name=OpikHallucinationExperiment.METRIC_NAME,
-                    score=metric.score,
+                    score=result.value,
+                    reason=result.reason,
                     llm_model_name=model.model_name,
-                    related_analysis=text[0],
+                    related_analysis=text[0]
                 )
             )
         return results
