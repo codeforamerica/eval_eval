@@ -20,6 +20,8 @@ Resources:
 - [GEval](https://www.confident-ai.com/blog/g-eval-the-definitive-guide)
 """
 
+# Deepseek is a fairly good contender from the Ollama model offerings.
+# However, it is very slow compared to an OpenAI model.
 EVAL_MODEL = "deepseek-r1:8b"
 
 
@@ -71,6 +73,13 @@ class DeepEvalFaithfulnessExperiment(MetricExperimentBase):
 class DeepEvalAnswerRelevancyExperiment(MetricExperimentBase):
     METRIC_NAME = "deep_eval_answer_relevancy"
 
+    QUESTION_MAP = {
+        "Required Actions": "**Required Actions**: What specific actions, if any, must the recipient take after receiving this notice? Include deadlines and consequences of inaction.",
+        "Document Classification": "**Document Classification**: Determine whether this document is primarily informational (notifying the recipient of status or updates) or action-required (demanding a response to maintain benefits). Explain the potential consequences if the recipient does not respond to or act on this document.",
+        "Plain Language Assessment": "**Plain Language Assessment**: Evaluate whether this notice uses plain language appropriate for a 6th-grade reading level. Consider vocabulary complexity, sentence structure, and use of jargon or technical terms.",
+        "Effectiveness Improvements": "**Effectiveness Improvements**: Identify the most significant changes that would make this document more effective for the recipient, focusing on clarity, accessibility, and actionability.",
+    }
+
     @staticmethod
     @observe
     def run_eval(
@@ -84,8 +93,15 @@ class DeepEvalAnswerRelevancyExperiment(MetricExperimentBase):
             logger.info(
                 f"DeepEval Answer Relevancy: Evaluating step {i + 1} of {len(analysis.questions)}"
             )
+            question = item.question.strip()
+            if (
+                analysis.prompt_name == "prompt_2"
+                and question in DeepEvalAnswerRelevancyExperiment.QUESTION_MAP.keys()
+            ):
+                logger.info("Using expanded question for prompt_2.")
+                question = DeepEvalAnswerRelevancyExperiment.QUESTION_MAP[question]
             test_case = LLMTestCase(
-                input=item.question,
+                input=question,
                 actual_output=item.answer,
             )
             metric.measure(test_case)
