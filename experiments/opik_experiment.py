@@ -34,7 +34,6 @@ class OpikHallucinationExperiment(MetricExperimentBase):
         results = []
         for i, text in enumerate(text_to_evaluate):
             logger.info(f"Opik Hallucination: Evaluating step {i + 1} of {len(text_to_evaluate)}")
-            # print(text)
             result = metric.score(input=text[0], output=text[1], context=[notice_text])
             results.append(
                 EvaluationResult(
