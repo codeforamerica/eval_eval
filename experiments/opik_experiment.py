@@ -28,14 +28,14 @@ class OpikHallucinationExperiment(MetricExperimentBase):
         model = OllamaModel("deepseek-r1:8b")
         text_to_evaluate = [("summary", analysis.summary)]
         for item in analysis.questions:
-            text_to_evaluate.append((item.question, item.answer, item.context))
+            text_to_evaluate.append((item.question, item.answer))
         metric = Hallucination()
 
         results = []
         for i, text in enumerate(text_to_evaluate):
             logger.info(f"Opik Hallucination: Evaluating step {i + 1} of {len(text_to_evaluate)}")
-
-            result = metric.score(input=text[0], output=text[1], context=text[2])
+            # print(text)
+            result = metric.score(input=text[0], output=text[1], context=[notice_text])
             results.append(
                 EvaluationResult(
                     metric_name=OpikHallucinationExperiment.METRIC_NAME,
