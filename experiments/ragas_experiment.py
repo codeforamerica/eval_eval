@@ -12,6 +12,7 @@ from ragas.evaluation import evaluate
 from eval_eval.evaluation import MetricExperimentBase
 from eval_eval.schema import Analysis, EvaluationResult
 
+
 ollama_llm = Ollama(model="deepseek-r1:8b")  # or "mistral" if you want something faster
 ragas_llm = LangchainLLM(llm=ollama_llm)
 RAGAS_LLM.set(ragas_llm)
