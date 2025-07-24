@@ -36,7 +36,7 @@ class PromptfooFaithfulnessExperiment(MetricExperimentBase):
                 {
                     "type": "context-faithfulness",
                     "threshold": 0.5,  # Default threshold
-                    "provider": f"ollama:completion:{model_name}",
+                    "provider": f"ollama:completion:llama2",
                 }
             ],
             "description": f"Summary Faithfulness for {analysis.llm_model_name} with {analysis.prompt_name}",
@@ -93,9 +93,9 @@ class PromptfooFaithfulnessExperiment(MetricExperimentBase):
         sanitized_model_name = model_name.replace(':', '_').replace('/', '_').replace('\\', '_')
         sanitized_prompt_name = analysis.prompt_name.replace(':', '_').replace('/', '_').replace('\\', '_')
         
-        config_filename = f"{PromptfooFaithfulnessExperiment.CONFIG_FILE_BASE}_{sanitized_model_name}_{sanitized_prompt_name}.yaml"
-        output_filename = f"{PromptfooFaithfulnessExperiment.OUTPUT_FILE_BASE}_{sanitized_model_name}_{sanitized_prompt_name}.json"
-        
+        config_filename = os.path.join("experiments", f"{PromptfooFaithfulnessExperiment.CONFIG_FILE_BASE}_{sanitized_model_name}_{sanitized_prompt_name}.yaml")
+        output_filename = os.path.join("experiments", f"{PromptfooFaithfulnessExperiment.OUTPUT_FILE_BASE}_{sanitized_model_name}_{sanitized_prompt_name}.json")
+    
         logger.info(f"Generating promptfoo config for analysis by {model_name} (Prompt: {analysis.prompt_name})")
         config_data = PromptfooFaithfulnessExperiment._generate_promptfoo_config(
             analysis, notice_text, model_name, output_filename # Pass output_filename to config generator
@@ -113,8 +113,8 @@ class PromptfooFaithfulnessExperiment(MetricExperimentBase):
                 "eval",
                 "-c", config_filename,
                 "--output", output_filename,
-                "--no-auto-open", # Prevent browser from opening if running in CI/headless
-                "--max-concurrent-evaluations", "1" # Limit concurrency for local Ollama
+                #"--no-auto-open", # Prevent browser from opening if running in CI/headless
+                #"--max-concurrent-evaluations", "1" # Limit concurrency for local Ollama
             ]
             
             process = subprocess.run(command, capture_output=True, text=True, check=True)
@@ -127,13 +127,15 @@ class PromptfooFaithfulnessExperiment(MetricExperimentBase):
             results_data = {}
             if os.path.exists(output_filename):
                 with open(output_filename, "r") as f:
-                    results_data = json.load(f)
-                os.remove(output_filename) # Clean up output file
+                    full_json_output = json.load(f)
+                #os.remove(output_filename) # Clean up output file
             else:
                 logger.error(f"promptfoo output file not found: {output_filename}")
                 return []
 
-            for test_case_result in results_data.get("results", []):
+            test_case_results_list = full_json_output.get("results", {}).get("results", [])
+            
+            for test_case_result in test_case_results_list: 
                 for assertion_result in test_case_result.get("assertionResults", []):
                     if assertion_result.get("type") == "context-faithfulness":
                         score = assertion_result.get("score", 0)
@@ -154,11 +156,44 @@ class PromptfooFaithfulnessExperiment(MetricExperimentBase):
             return evaluation_results
 
         except subprocess.CalledProcessError as e:
-            logger.error(f"promptfoo eval failed: {e}")
-            logger.error(f"Stdout: {e.stdout}")
-            logger.error(f"Stderr: {e.stderr}")
-            # Re-raise to indicate failure
-            raise
+            if e.returncode == 100:
+                logger.info(f"promptfoo eval completed with exit code 100 (expected success for some cases).")
+                logger.debug(f"promptfoo stdout:\n{e.stdout}")
+                if e.stderr:
+                    logger.warning(f"promptfoo stderr:\n{e.stderr}")
+                
+                # If exit code is 100, proceed with parsing results as it's considered a success
+                results_data = {}
+                if os.path.exists(output_filename):
+                    with open(output_filename, "r") as f:
+                        full_json_output = json.load(f)
+                else:
+                    logger.error(f"promptfoo output file not found after exit code 100: {output_filename}")
+                    return []
+
+                test_case_results_list = full_json_output.get("results", {}).get("results", [])
+                
+                for test_case_result in test_case_results_list:
+                    for assertion_result in test_case_result.get("gradingResult", {}).get("componentResults", []):
+                        if assertion_result.get("assertion", {}).get("type") == "context-faithfulness":
+                            score = assertion_result.get("score", 0)
+                            reason = assertion_result.get("reason", "No reason provided.")
+                            related_analysis_part = test_case_result.get("testCase", {}).get("metadata", {}).get("related_analysis_part", "unknown")
+                            evaluation_results.append(
+                                EvaluationResult(
+                                    metric_name=PromptfooFaithfulnessExperiment.METRIC_NAME,
+                                    score=score,
+                                    reason=reason,
+                                    llm_model_name=model_name,
+                                    related_analysis=related_analysis_part,
+                                )
+                            )
+                return evaluation_results
+            else:
+                logger.error(f"promptfoo eval failed with unexpected exit code {e.returncode}: {e}")
+                logger.error(f"Stdout: {e.stdout}")
+                logger.error(f"Stderr: {e.stderr}")
+                raise # Re-raise for other actual errors
         except FileNotFoundError:
             logger.error("Error: 'promptfoo' command not found. Is promptfoo installed and in your PATH?")
             logger.error("Install with: `npm install -g promptfoo` or `brew install promptfoo`.")
@@ -169,8 +204,8 @@ class PromptfooFaithfulnessExperiment(MetricExperimentBase):
         finally:
             # Clean up the generated config file even if an error occurs
             if os.path.exists(config_filename):
-                os.remove(config_filename)
-                logger.info(f"Cleaned up {config_filename}")
+                # os.remove(config_filename) # Commented out to keep file for promptfoo view
+                logger.info(f"Kept {config_filename} for promptfoo view.")
 
 
 # --- Main Execution Block ---
@@ -231,10 +266,10 @@ if __name__ == "__main__":
     logger.info("\n--- All evaluations completed. Final Manifest structure: ---")
     # save the updated_manifest back to a new JSON file if needed, comment out for now
     
-    #final_output_manifest_path = "manifest_with_promptfoo_results.json"
-    #with open(final_output_manifest_path, "w") as f:
-    #    json.dump(updated_manifest.model_dump(by_alias=True, exclude_unset=True), f, indent=2)
-    #logger.info(f"Updated manifest saved to {final_output_manifest_path}")
+    final_output_manifest_path = os.path.join("experiments", "manifest_with_promptfoo_results.json")
+    with open(final_output_manifest_path, "w") as f:
+        json.dump(updated_manifest.model_dump(by_alias=True, exclude_unset=True), f, indent=2)
+    logger.info(f"Updated manifest saved to {final_output_manifest_path}")
 
     # Print a summary of results
     print("\n--- Summary of All Promptfoo Faithfulness Scores ---")
