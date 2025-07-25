@@ -31,17 +31,17 @@ Sample Execution of "evaluate" command:
 Run all experiments:
 
 ```shell
-python main.py evaluate manifest_with_analysis.json --output-path="results.json"
+python main.py evaluate manifest_with_analysis.json --output_path="results.json"
 ```
 
 Run a single experiment:
 ```shell
-python main.py evaluate manifest_with_analysis.json --output-path="results.json" --metrics=rouge_experiment,another_experiment
+python main.py evaluate manifest_with_analysis.json --output_path="results.json" --metrics=rouge_experiment,another_experiment
 ```
 
 Run analysis:
 ```shell
-python main.py analyze manifest.json --output-path="results.json"
+python main.py analyze manifest.json --output_path="results.json"
 ```
 NB: Running the analysis command is not required for contributing evaluations. Manifests with and without analysis and notice documents are available on [Google Drive](https://drive.google.com/drive/folders/1Ejh-i1ZrF96tY2HBcuOXHsXussracltp?usp=drive_link).
 

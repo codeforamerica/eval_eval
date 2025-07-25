@@ -7,66 +7,66 @@ import pandas as pd
 from eval_eval.evaluation import MetricExperimentBase
 from eval_eval.schema import Analysis, EvaluationResult
 
-class MLFlowFaithfulnessExperiment(MetricExperimentBase):
 
+class MLFlowFaithfulnessExperiment(MetricExperimentBase):
     METRIC_NAME = "mlflow_faithfulness"
     MODEL_NAME = "openai:/gpt-4.1-mini"
 
     @staticmethod
     def run_eval(
-        analysis: Analysis, notice_text: str, notice_path: str
+            analysis: Analysis, notice_text: str, notice_path: str
     ) -> EvaluationResult | List[EvaluationResult]:
 
-      faithfulness_metric = faithfulness(model=MLFlowFaithfulnessExperiment.MODEL_NAME)
+        faithfulness_metric = faithfulness(model=MLFlowFaithfulnessExperiment.MODEL_NAME)
 
-      # MLFlow expects to evaluate "live"; that is, it expects a set of inputs and an "LLM".
-      # We can simulate the LLM using a simply python function that returns the pre-computed outputs.
-      #
-      # Construct the input data and the input-to-ouput function
-      input_data = {
-        "inputs": [],
-        "context": []
-      }
-      output_data = []
+        # MLFlow expects to evaluate "live"; that is, it expects a set of inputs and an "LLM".
+        # We can simulate the LLM using a simply python function that returns the pre-computed outputs.
+        #
+        # Construct the input data and the input-to-ouput function
+        input_data = {
+            "inputs": [],
+            "context": []
+        }
+        output_data = []
 
-      input_data["inputs"].append("summary")
-      input_data["context"].append(notice_text)
-      output_data.append(analysis.summary)
-
-      for item in analysis.questions:
-        input_data["inputs"].append(item.question)
+        input_data["inputs"].append("summary")
         input_data["context"].append(notice_text)
-        output_data.append(item.answer)
+        output_data.append(analysis.summary)
 
-      simulated_llm = lambda inputs: output_data
+        for item in analysis.questions:
+            input_data["inputs"].append(item.question)
+            input_data["context"].append(notice_text)
+            output_data.append(item.answer)
 
-      results = []
-      with mlflow.start_run() as run:
-        mlflow_results = mlflow.evaluate(
-          simulated_llm,
-          pd.DataFrame(input_data),
-          evaluators=None,
-          extra_metrics=[faithfulness_metric],
-          evaluator_config={
-            "col_mapping": {
-              "inputs": "inputs",
-              "context": "context"
-            }
-          }
-        )
+        simulated_llm = lambda inputs: output_data
 
-      mlflow.end_run()
+        results = []
+        with mlflow.start_run() as run:
+            mlflow_results = mlflow.evaluate(
+                simulated_llm,
+                pd.DataFrame(input_data),
+                evaluators=None,
+                extra_metrics=[faithfulness_metric],
+                evaluator_config={
+                    "col_mapping": {
+                        "inputs": "inputs",
+                        "context": "context"
+                    }
+                }
+            )
 
-      outputs = mlflow_results.tables['eval_results_table'].to_dict()
-      results = []
-      for i in range(0, len(outputs)):
-        results.append(
-          EvaluationResult(
-            metric_name=MLFlowFaithfulnessExperiment.METRIC_NAME,
-            score=outputs['faithfulness/v1/score'][i],
-            related_analysis=outputs['outputs'][i],
-            llm_model_name=MLFlowFaithfulnessExperiment.MODEL_NAME,
-          )
-      )
+        mlflow.end_run()
 
-      return results
+        outputs = mlflow_results.tables['eval_results_table'].to_dict()
+        results = []
+        for i in range(0, len(outputs)):
+            results.append(
+                EvaluationResult(
+                    metric_name=MLFlowFaithfulnessExperiment.METRIC_NAME,
+                    score=outputs['faithfulness/v1/score'][i],
+                    related_analysis=outputs['outputs'][i],
+                    llm_model_name=MLFlowFaithfulnessExperiment.MODEL_NAME,
+                )
+            )
+
+        return results

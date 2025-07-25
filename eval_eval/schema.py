@@ -1,6 +1,6 @@
-from typing import List, Literal, Optional
+from typing import List, Optional
 
-from pydantic import BaseModel, Field, model_serializer
+from pydantic import BaseModel, Field
 from pydantic.json_schema import SkipJsonSchema
 
 """
@@ -32,8 +32,11 @@ class EvaluationResult(BaseModel):
 
 
 class AnalysisQuestion(BaseModel):
-    question: str = Field(description="The question you are answering")
+    question: str = Field(description="The question you are asking")
     answer: str = Field(description="Your 2-3 sentence answer to the question")
+    context: SkipJsonSchema[Optional[List[str]]] = Field(default_factory=list,
+                                                         description="List of context strings for the question you are asking"
+                                                         )
 
 
 class Analysis(BaseModel):
