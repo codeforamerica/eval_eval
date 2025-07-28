@@ -36,7 +36,7 @@ class PromptfooFaithfulnessExperiment(MetricExperimentBase):
                 {
                     "type": "context-faithfulness",
                     "threshold": 0.5,  # Default threshold
-                    "provider": f"ollama:completion:llama2",
+                    "provider": f"ollama:completion:{model_name}",
                 }
             ],
             "description": f"Summary Faithfulness for {analysis.llm_model_name} with {analysis.prompt_name}",
