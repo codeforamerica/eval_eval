@@ -1,27 +1,22 @@
-from datasets import Dataset
-
 from typing import List
 
-from langchain_community.llms import Ollama
-from ragas.llms import LangchainLLM
-from ragas import RAGAS_LLM
-from ragas.metrics import faithfulness
-from ragas.evaluation import evaluate
-
+from langchain_openai import ChatOpenAI
+from ragas.dataset_schema import SingleTurnSample
+from ragas.llms import LangchainLLMWrapper
+from ragas.metrics import Faithfulness
 
 from eval_eval.evaluation import MetricExperimentBase
+from eval_eval.logger import logger
 from eval_eval.schema import Analysis, EvaluationResult
 
+MODEL_NAME = "gpt-4.1"
 
-ollama_llm = Ollama(model="deepseek-r1:8b")  # or "mistral" if you want something faster
-ragas_llm = LangchainLLM(llm=ollama_llm)
-RAGAS_LLM.set(ragas_llm)
+open_ai_model = ChatOpenAI(model=MODEL_NAME)
+ragas_llm = LangchainLLMWrapper(langchain_llm=open_ai_model)
 
 
 class RagasFaithfulnessExperiment(MetricExperimentBase):
-
     METRIC_NAME = "ragas_faithfulness"
-    MODEL_NAME = "deepseek-r1:8b"  
 
     @staticmethod
     def run_eval(
@@ -30,45 +25,40 @@ class RagasFaithfulnessExperiment(MetricExperimentBase):
         """
         Run RAGAS faithfulness evaluation on a given scenario.
         """
-        print(f"\nSummary: {analysis.summary}\n")
-        for question in analysis.questions:
-            print(f"Question: {question.question}\nAnswer: {question.answer}\n")
-        print("\n\n")
-
-
-        if not hasattr(analysis.questions[0], "context_chunks") or not analysis.questions[0].context_chunks:
-            return EvaluationResult(
-                metric_name=RagasFaithfulnessExperiment.METRIC_NAME,
-                score=None,
-                reason="Missing context chunks; required for Ragas faithfulness evaluation.",
-                llm_model_name=RagasFaithfulnessExperiment.MODEL_NAME,
-            )
-
-        # Prepare dataset for Ragas
-        data = []
-        for q in analysis.questions:
-            data.append({
-                "question": q.question,
-                "answer": q.answer,
-                "context": q.context_chunks,
-                "ground_truth": "",  # Not required for faithfulness
-            })
-
-        ragas_dataset = Dataset.from_list(data)
-
-        # Configure Ragas to use Ollama
-        ollama_llm = Ollama(model=RagasFaithfulnessExperiment.MODEL_NAME)
-        ragas_llm = LangchainLLM(llm=ollama_llm)
-        RAGAS_LLM.set(ragas_llm)
-
-        # Run the evaluation
-        # Evaluate
-        result = evaluate(dataset=ragas_dataset, metrics=[faithfulness])
-        score = result["faithfulness"]
-
-        return EvaluationResult(
-            metric_name=RagasFaithfulnessExperiment.METRIC_NAME,
-            score=score,
-            reason="Evaluated with Ragas faithfulness metric using Ollama.",
-            llm_model_name=RagasFaithfulnessExperiment.MODEL_NAME,
+        results = []
+        logger.info(f"Ragas Faithfulness: evaluating summary")
+        sample = SingleTurnSample(
+            user_input="Write a 2-3 sentence summary of the notice.",
+            response=analysis.summary,
+            retrieved_contexts=[notice_text],
         )
+        scorer = Faithfulness(llm=ragas_llm)
+        score = scorer.single_turn_score(sample)
+        results.append(
+            EvaluationResult(
+                metric_name=RagasFaithfulnessExperiment.METRIC_NAME,
+                score=score,
+                llm_model_name=MODEL_NAME,
+                related_analysis="summary",
+            )
+        )
+        for i, q in enumerate(analysis.questions):
+            logger.info(
+                f"Ragas Faithfulness: evaluating question {i + 1} of {len(analysis.questions)}"
+            )
+            sample = SingleTurnSample(
+                user_input=q.question,
+                response=q.answer,
+                retrieved_contexts=[notice_text],
+            )
+            scorer = Faithfulness(llm=ragas_llm)
+            score = scorer.single_turn_score(sample)
+            results.append(
+                EvaluationResult(
+                    metric_name=RagasFaithfulnessExperiment.METRIC_NAME,
+                    score=score,
+                    llm_model_name=MODEL_NAME,
+                    related_analysis=q.question,
+                )
+            )
+        return results
