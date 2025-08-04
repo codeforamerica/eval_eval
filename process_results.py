@@ -43,6 +43,10 @@ METRIC_VALUE_RANGE = {
     "promptfoo_faithfulness": {
         "positive": 1,
         "negative": 0,
+    },
+    "ragas_faithfulness": {
+        "positive": 1,
+        "negative": 0,
     }
 }
 
@@ -66,30 +70,15 @@ QUESTION_MAP = {
     "**Effectiveness Improvements**": "Effectiveness",
 }
 
-def process_results(manifests: list) -> pd.DataFrame:
-    rows = []
-    for manifest_path in manifests:
-        manifest: Manifest = hydrate_document_manifest(manifest_path)
-        for document in manifest.documents:
-            for analysis in document.notice_analysis:
-                for evaluation_result in analysis.evaluation_results:
-                  value_range = METRIC_VALUE_RANGE[evaluation_result.metric_name]
-                  rows.append({
-                      "document": os.path.basename(document.path),
-                      "analysis_llm": analysis.llm_model_name,
-                      "analysis_prompt": analysis.prompt_name,
-                      ** evaluation_result.model_dump(),
-                      ** value_range
-                  })
-    df = pd.DataFrame(rows)
-    df.rename(columns={"llm_model_name": "evaluation_llm"}, inplace=True)
-    df["related_analysis"] = df["related_analysis"].replace(QUESTION_MAP)
-    print(df["related_analysis"].value_counts(dropna=False))
 
 def get_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "manifests",
+        type=str,
+    )
+    parser.add_argument(
+        "output",
         type=str,
     )
     return parser.parse_args()
@@ -102,7 +91,31 @@ def get_manifests(manifest_path: str) -> list:
     return all_manifests
 
 
+def process_results(manifests: list) -> pd.DataFrame:
+    rows = []
+    for manifest_path in manifests:
+        manifest: Manifest = hydrate_document_manifest(manifest_path)
+        for document in manifest.documents:
+            for analysis in document.notice_analysis:
+                for evaluation_result in analysis.evaluation_results:
+                    value_range = METRIC_VALUE_RANGE[evaluation_result.metric_name]
+                    rows.append({
+                        "document": os.path.basename(document.path),
+                        "analysis_llm": analysis.llm_model_name,
+                        "analysis_prompt": analysis.prompt_name,
+                        **evaluation_result.model_dump(),
+                        **value_range
+                    })
+    df = pd.DataFrame(rows)
+    df = df.rename(columns={"llm_model_name": "evaluation_llm"})
+    df["related_analysis"] = df["related_analysis"].replace(QUESTION_MAP)
+    df["related_analysis"] = df["related_analysis"].str.lower()
+    df = df.drop(columns=["details", "duration"])
+    print(df["related_analysis"].value_counts(dropna=False))
+    return df
+
 if __name__ == "__main__":
     provided_args = get_args()
     manifests = get_manifests(provided_args.manifests)
-    process_results(manifests)
+    results = process_results(manifests)
+    results.to_csv(provided_args.output, index=False)
