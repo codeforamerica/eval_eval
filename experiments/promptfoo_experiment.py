@@ -64,7 +64,7 @@ class PromptfooFaithfulnessExperiment(MetricExperimentBase):
                 ],
                 "description": f"Question {i + 1} Faithfulness for {analysis.llm_model_name} with {analysis.prompt_name}",
                 "metadata": {
-                    "related_analysis_part": f"question_{i + 1}",
+                    "related_analysis_part": item.question,
                     "llm_model_name": analysis.llm_model_name,
                     "prompt_name": analysis.prompt_name,
                 }
@@ -90,7 +90,7 @@ class PromptfooFaithfulnessExperiment(MetricExperimentBase):
         model_name = "openai:gpt-4.1"
 
         # Sanitize model and prompt names for filenames
-        sanitized_model_name = model_name.replace(':', '_').replace('/', '_').replace('\\', '_')
+        sanitized_model_name = analysis.llm_model_name.replace(':', '_').replace('/', '_').replace('\\', '_')
         sanitized_prompt_name = analysis.prompt_name.replace(':', '_').replace('/', '_').replace('\\', '_')
 
         config_filename = os.path.join("experiments",
@@ -138,13 +138,13 @@ class PromptfooFaithfulnessExperiment(MetricExperimentBase):
             test_case_results_list = full_json_output.get("results", {}).get("results", [])
 
             for test_case_result in test_case_results_list:
-                for assertion_result in test_case_result.get("assertionResults", []):
-                    if assertion_result.get("type") == "context-faithfulness":
+                for assertion_result in test_case_result.get("gradingResult", {}).get("componentResults", {}):
+                    if assertion_result.get("assertion", {}).get("type", None) == "context-faithfulness":
                         score = assertion_result.get("score", 0)
                         reason = assertion_result.get("reason", "No reason provided.")
 
                         # Extract metadata
-                        related_analysis_part = test_case_result.get("test", {}).get("metadata", {}).get(
+                        related_analysis_part = test_case_result.get("metadata", {}).get(
                             "related_analysis_part", "unknown")
 
                         evaluation_results.append(
@@ -177,12 +177,15 @@ class PromptfooFaithfulnessExperiment(MetricExperimentBase):
                 test_case_results_list = full_json_output.get("results", {}).get("results", [])
 
                 for test_case_result in test_case_results_list:
-                    for assertion_result in test_case_result.get("gradingResult", {}).get("componentResults", []):
-                        if assertion_result.get("assertion", {}).get("type") == "context-faithfulness":
+                    for assertion_result in test_case_result.get("gradingResult", {}).get("componentResults", {}):
+                        if assertion_result.get("assertion", {}).get("type", None) == "context-faithfulness":
                             score = assertion_result.get("score", 0)
                             reason = assertion_result.get("reason", "No reason provided.")
-                            related_analysis_part = test_case_result.get("testCase", {}).get("metadata", {}).get(
+
+                            # Extract metadata
+                            related_analysis_part = test_case_result.get("metadata", {}).get(
                                 "related_analysis_part", "unknown")
+
                             evaluation_results.append(
                                 EvaluationResult(
                                     metric_name=PromptfooFaithfulnessExperiment.METRIC_NAME,
