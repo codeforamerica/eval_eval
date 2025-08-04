@@ -1,4 +1,5 @@
 import inspect
+import time
 from abc import ABC, abstractmethod
 from importlib import import_module
 from pathlib import Path
@@ -64,7 +65,11 @@ def run_experiments_from_manifest(
                 logger.info(
                     f"Beginning: {experiment.METRIC_NAME} evaluating analysis of {document.path} produced by {analysis.llm_model_name} with {analysis.prompt_name}"
                 )
+                start = time.time()
                 results = experiment.run_eval(analysis, document.text, document.path)
+                duration = time.time() - start
                 if type(results) is not list:
                     results = [results]
+                for result in results:
+                    result.duration = duration
                 analysis.evaluation_results.extend(results)
