@@ -7,7 +7,6 @@ import pandas as pd
 from eval_eval.evaluation import MetricExperimentBase
 from eval_eval.schema import Analysis, EvaluationResult
 
-
 class MLFlowFaithfulnessExperiment(MetricExperimentBase):
     METRIC_NAME = "mlflow_faithfulness"
     MODEL_NAME = "openai:/gpt-4.1-mini"
@@ -40,7 +39,6 @@ class MLFlowFaithfulnessExperiment(MetricExperimentBase):
 
         simulated_llm = lambda inputs: output_data
 
-        results = []
         with mlflow.start_run() as run:
             mlflow_results = mlflow.evaluate(
                 simulated_llm,
@@ -64,9 +62,9 @@ class MLFlowFaithfulnessExperiment(MetricExperimentBase):
                 EvaluationResult(
                     metric_name=MLFlowFaithfulnessExperiment.METRIC_NAME,
                     score=outputs['faithfulness/v1/score'][i],
-                    related_analysis=outputs['outputs'][i],
+                    reason=outputs['faithfulness/v1/justification'][i],
+                    related_analysis=outputs['inputs'][i],
                     llm_model_name=MLFlowFaithfulnessExperiment.MODEL_NAME,
                 )
             )
-
         return results
