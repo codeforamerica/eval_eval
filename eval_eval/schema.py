@@ -29,6 +29,9 @@ class EvaluationResult(BaseModel):
     related_analysis: Optional[str] = Field(
         default="all",
     )
+    duration: Optional[float] = Field(
+        default=None, description="The duration of the evaluation."
+    )
 
 
 class AnalysisQuestion(BaseModel):

@@ -22,7 +22,7 @@ Resources:
 
 # Deepseek is a fairly good contender from the Ollama model offerings.
 # However, it is very slow compared to an OpenAI model.
-EVAL_MODEL = "deepseek-r1:8b"
+EVAL_MODEL = "gpt-4.1"
 
 
 def _get_model(model_name: str) -> DeepEvalBaseLLM:
@@ -58,6 +58,7 @@ class DeepEvalFaithfulnessExperiment(MetricExperimentBase):
                 actual_output=text[1],
             )
             metric.measure(test_case)
+            logger.info(f"DeepEval reports cost of {metric.evaluation_cost}")
             results.append(
                 EvaluationResult(
                     metric_name=DeepEvalFaithfulnessExperiment.METRIC_NAME,
@@ -105,6 +106,7 @@ class DeepEvalAnswerRelevancyExperiment(MetricExperimentBase):
                 actual_output=item.answer,
             )
             metric.measure(test_case)
+            logger.info(f"DeepEval reports cost of {metric.evaluation_cost}")
             results.append(
                 EvaluationResult(
                     metric_name=DeepEvalAnswerRelevancyExperiment.METRIC_NAME,
@@ -128,9 +130,10 @@ class DeepEvalGEvalExperiment(MetricExperimentBase):
         for metric in metrics:
             logger.info(f"DeepEval GEval {metric.name}: Evaluating {related_analysis}")
             metric.measure(test_case)
+            logger.info(f"DeepEval reports cost of {metric.evaluation_cost}")
             results.append(
                 EvaluationResult(
-                    metric_name=f"{DeepEvalAnswerRelevancyExperiment.METRIC_NAME}:{metric.name.lower().replace(" ", "_")}",
+                    metric_name=f"{DeepEvalGEvalExperiment.METRIC_NAME}:{metric.name.lower().replace(" ", "_")}",
                     score=metric.score,
                     reason=metric.reason,
                     llm_model_name=metric.model.model_name,

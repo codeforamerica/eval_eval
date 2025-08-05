@@ -105,3 +105,5 @@ experiments/promptfooconfig_llama3.1_8b_prompt_2.yaml
 experiments/promptfooconfig_qwen3_8b_prompt_1.yaml
 experiments/promptfooconfig_qwen3_8b_prompt_2.yaml
 mlruns/
+*.yaml
+*.yml

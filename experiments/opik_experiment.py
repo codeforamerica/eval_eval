@@ -1,7 +1,7 @@
 from typing import List
+import time
 
 from opik.evaluation.metrics import Hallucination
-from deepeval.models import OllamaModel
 
 from eval_eval.evaluation import MetricExperimentBase
 from eval_eval.logger import logger
@@ -16,6 +16,8 @@ Resources:
 - [Hallucination Metric](https://www.comet.com/docs/opik/evaluation/metrics/hallucination)
 """
 
+EVALUATION_MODEL = "gpt-4.1"
+
 
 class OpikHallucinationExperiment(MetricExperimentBase):
     METRIC_NAME = "opik_eval_hallucination"
@@ -25,12 +27,12 @@ class OpikHallucinationExperiment(MetricExperimentBase):
             analysis: Analysis, notice_text: str, notice_path: str
     ) -> EvaluationResult | List[EvaluationResult]:
         # Add an ID to analysis parts.
-        model = OllamaModel("deepseek-r1:8b")
         text_to_evaluate = [("summary", analysis.summary)]
         for item in analysis.questions:
             text_to_evaluate.append((item.question, item.answer))
-        metric = Hallucination()
+        metric = Hallucination(model=EVALUATION_MODEL)
 
+        time.sleep(10)
         results = []
         for i, text in enumerate(text_to_evaluate):
             logger.info(f"Opik Hallucination: Evaluating step {i + 1} of {len(text_to_evaluate)}")
@@ -40,8 +42,9 @@ class OpikHallucinationExperiment(MetricExperimentBase):
                     metric_name=OpikHallucinationExperiment.METRIC_NAME,
                     score=result.value,
                     reason=result.reason,
-                    llm_model_name=model.model_name,
+                    llm_model_name=EVALUATION_MODEL,
                     related_analysis=text[0]
                 )
             )
+
         return results
